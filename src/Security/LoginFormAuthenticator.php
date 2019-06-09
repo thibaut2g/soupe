@@ -45,8 +45,9 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     public function getCredentials(Request $request)
     {
         $credentials = [
+            'firstname' => $request->request->get('firstname'),
+            'lastname' => $request->request->get('lastname'),
             'email' => $request->request->get('email'),
-            'password' => $request->request->get('password'),
             'csrf_token' => $request->request->get('_csrf_token'),
         ];
         $request->getSession()->set(
@@ -68,7 +69,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
         if (!$user) {
             // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Email could not be found.');
+            $user = $this->registerUser($credentials);
         }
 
         return $user;
@@ -76,7 +77,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+        return true;
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
@@ -91,5 +92,22 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     protected function getLoginUrl()
     {
         return $this->urlGenerator->generate('app_login');
+    }
+
+    /**
+     * @param $credentials
+     * @return User
+     */
+    private function registerUser($credentials)
+    {
+        $user = new User();
+        $user->setEmail($credentials["email"]);
+        $user->setNomComplet($credentials["firstname"]." ".$credentials["lastname"]);
+        $user->setPassword("");
+        $em = $this->entityManager;
+        $em->persist($user);
+        $em->flush();
+
+        return $user;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Subscription;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CalendarService
@@ -10,18 +11,18 @@ class CalendarService
     private $em;
 
     static $months = [
-        'Janvier' => 1,
-        'Février' => 2,
-        'Mars' => 3,
-        'Avril' => 4,
-        'Mai' => 5,
-        'Juin' => 6,
-        'Juillet' => 7,
-        'Août' => 8,
-        'Septembre' => 9,
-        'Octobre' => 10,
-        'Novembre' => 11,
-        'Decembre' => 12
+        'Janvier' => "01",
+        'Février' => "02",
+        'Mars' => "03",
+        'Avril' => "04",
+        'Mai' => "05",
+        'Juin' => "06",
+        'Juillet' => "07",
+        'Août' => "08",
+        'Septembre' => "09",
+        'Octobre' => "10",
+        'Novembre' => "11",
+        'Decembre' => "12"
     ];
 
     static $week = [
@@ -46,11 +47,12 @@ class CalendarService
      */
     public function saveDate($userId, $date)
     {
-        $date = $this->getFormattedDate($date);
+        if (!$this->validateDate($date))
+            $date = $this->getFormattedDate($date);
         $date = new \DateTime($date);
 
         $subscriptions = $this->em->getRepository(Subscription::class)
-            ->findBy(['date' => $date]);
+            ->findBy(['date' => $date, "isRemoved" => NULL]);
         if (count($subscriptions) >= 5)
             return false;
 
@@ -72,21 +74,22 @@ class CalendarService
     {
         $date = explode(" ", $date);
 
-        return $date[3]."-".self::$months[$date[2]]."-".$date[1];
+        $date = $date[3]."-".self::$months[$date[2]]."-".$date[1];
+
+        if (!$this->validateDate($date))
+            return "2019-01-01";
+
+        return $date;
     }
 
-    public function getTbody($userId, $date = false)
+    public function getTbody($userId, $monday = false)
     {
-        if (false === $date)
-            $date = new \DateTime('monday this week');
+        if (false === $monday)
+            $monday = new \DateTime('monday this week');
         else
-            $date = new \DateTime($date);
+            $monday = new \DateTime($monday);
 
-        foreach (self::$week as $day) {
-            $calendar[$day] =  $this->em->getRepository(Subscription::class)
-                                        ->findBy(['date' => $date]);
-            $date->modify('+1 day');
-        }
+        $calendar = $this->getCalendar($monday);
 
         $tbody = '';
 
@@ -94,16 +97,24 @@ class CalendarService
         for ($i = 1; $i <= 5; $i++) {
             $tr = '';
             $count = 0;
+
             foreach (self::$week as $day) {
                 $tr .= "<td>";
-                if ($date = array_pop($calendar[$day])) {
-                    $tr .= ($date->getUserId() == $userId) ? "<i class=\"material-icons green-text\">verified_user</i>" : "<i class=\"material-icons grey-text\">verified_user</i>";
+                $date = array_pop($calendar[$day]);
+                if ($date && is_object($date)) {
+                    $tr .= $this->getUserSubscription($date->getUserId(), $userId);
                     $count++;
+                } elseif($i == 5) {
+                    $tr .= $this->getSubscribeButton($date, $userId);
+                } else {
+                    array_push($calendar[$day], $date);
                 }
+
                 $tr .= "</td>";
             }
 
             if ($count == 0) {
+                $tbody .= $this->getSubscribeButtons($calendar, $userId);
                 break;
             }
 
@@ -151,5 +162,90 @@ class CalendarService
         $date->modify('-1 week');
 
         return $date->format('Y-m-d');
+    }
+
+    private function getCalendar($date)
+    {
+        foreach (self::$week as $day) {
+            $calendar[$day] =  $this->em->getRepository(Subscription::class)
+                ->findBy(['date' => $date, 'isRemoved' => NULL]);
+            array_unshift($calendar[$day], $date->format('Y-m-d'));
+            $date->modify('+1 day');
+        }
+        return $calendar;
+    }
+
+    private function getSubscribeButton($date, $userId)
+    {
+        $askedDate = new \DateTime($date);
+        $subscriptions = $this->em->getRepository(Subscription::class)
+            ->findBy(['date' => $askedDate, "userId" => $userId, "isRemoved" => NULL]);
+
+        if (!empty($subscriptions))
+            return "<i class='material-icons unsubscribe black-text' data-date='".$date."'>clear</i>";
+
+        return "<i class='material-icons subscribe blue-text' data-date='".$date."'>control_point</i>";
+    }
+
+    private function getSubscribeButtons($calendar, $userId)
+    {
+        $subscribeButtons = "<tr>";
+
+        foreach (self::$week as $day) {
+            $subscribeButtons .= "<td>";
+            $date = array_pop($calendar[$day]);
+            $subscribeButtons .= $this->getSubscribeButton($date, $userId);
+
+            $subscribeButtons .= "</td>";
+        }
+        $subscribeButtons .= "<tr>";
+        return $subscribeButtons;
+
+    }
+
+    private function validateDate($date)
+    {
+        $d = \DateTime::createFromFormat('Y-m-d', $date);
+        return $d && $d->format('Y-m-d') === $date;
+    }
+
+    public function unsubscribeDate($userId, $date)
+    {
+        $date = new \DateTime($date);
+        $subscriptions = $this->em->getRepository(Subscription::class)
+            ->findBy(['date' => $date, "userId" => $userId, "isRemoved" => NULL]);
+        foreach ($subscriptions as $subscription) {
+            $subscription->setIsRemoved(true);
+            $this->em->persist($subscription);
+        }
+        $this->em->flush();
+
+        return true;
+    }
+
+    private function getUserSubscription($userId, $SelfUserId)
+    {
+        $user = $this->em->getRepository(User::class)
+            ->findOneBy(['id' => $userId]);
+
+        $selfUser = $this->em->getRepository(User::class)
+            ->findOneBy(['id' => $SelfUserId]);
+
+        $result = ($SelfUserId == $userId) ? "<i class=\"material-icons green-text userinfo\">verified_user</i>" : "<i class=\"material-icons grey-text userinfo\">verified_user</i>";
+
+        if (in_array('ROLE_ADMIN', $selfUser->getRoles()))
+            $result .= "<div class=\"card blue-grey darken-1 hiddendiv\" style='position: absolute'>
+                            <div class=\"card-content white-text\">
+                              <span class=\"card-title\">".$user->getNomComplet()."</span>
+                              <p>
+                                ".$user->getEmail()."
+                                <br>
+                                ".$user->getPhone()."
+                              </p>
+                            </div>
+                          </div>";
+
+
+        return $result;
     }
 }

@@ -47,6 +47,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $credentials = [
             'firstname' => $request->request->get('firstname'),
             'lastname' => $request->request->get('lastname'),
+            'phone' => $request->request->get('phone'),
             'email' => $request->request->get('email'),
             'csrf_token' => $request->request->get('_csrf_token'),
         ];
@@ -103,6 +104,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $user = new User();
         $user->setEmail($credentials["email"]);
         $user->setNomComplet($credentials["firstname"]." ".$credentials["lastname"]);
+        $user->setPhone($credentials["phone"]);
         $user->setPassword("");
         $em = $this->entityManager;
         $em->persist($user);

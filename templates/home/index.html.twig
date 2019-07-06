@@ -4,6 +4,23 @@
 
 {% block body %}
 
+    <style>
+        .subscribe, .unsubscribe {
+            cursor: pointer;
+        }
+        .subscribe:hover {
+            color: #00af00 !important;
+        }
+        .unsubscribe:hover {
+            color: #d10000 !important;
+        }
+        {% if is_granted('ROLE_ADMIN') %}
+            .userinfo {
+                cursor: pointer;
+            }
+        {% endif %}
+    </style>
+
 <div class="container">
     <h3 class="center">Inscription à la soupe du Sacré Choeur</h3>
 
@@ -50,6 +67,32 @@
             </table>
         </div>
     </div>
+    <div class="row">
+        <div class="col m6 s12">
+            <ul class="collapsible">
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">info_outline</i>Informations / Horaires</div>
+                    <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+                </li>
+            </ul>
+        </div>
+        <div class="col m6 s12">
+            <ul class="collapsible">
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">person_pin</i>Responsable du jour</div>
+                    <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    {% if is_granted('ROLE_ADMIN') %}
+
+        <div class="row">
+            <hr>
+            <h3>Partie Admin</h3>
+            <p>Cette partie est uniquement visible par les administrateurs</p>
+        </div>
+    {% endif %}
 </div>
 {% endblock %}
 

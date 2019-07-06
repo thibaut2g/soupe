@@ -135,6 +135,11 @@ class User implements UserInterface
     protected $resetToken;
 
     /**
+     * @ORM\Column(type="string", length=20)
+     */
+    private $phone;
+
+    /**
      * @return string
      */
     public function getResetToken(): string
@@ -148,5 +153,17 @@ class User implements UserInterface
     public function setResetToken(?string $resetToken): void
     {
         $this->resetToken = $resetToken;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(string $phone): self
+    {
+        $this->phone = $phone;
+
+        return $this;
     }
 }

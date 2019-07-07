@@ -24,11 +24,19 @@ class HomeController extends AbstractController
     ];
 
     /**
+     * @Route("/")
+     */
+    public function index()
+    {
+        return $this->redirectToRoute("home");
+    }
+
+    /**
      * @Route("/home", name="home")
      * @param CalendarService $calendarService
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index(CalendarService $calendarService)
+    public function home(CalendarService $calendarService)
     {
         $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
 

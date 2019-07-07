@@ -182,7 +182,7 @@ class CalendarService
             ->findBy(['date' => $askedDate, "userId" => $userId, "isRemoved" => NULL]);
 
         if (!empty($subscriptions))
-            return "<i class='material-icons unsubscribe black-text' data-date='".$date."'>clear</i>";
+            return "<i class='material-icons unsubscribe red-text' data-date='".$date."'>highlight_off</i>";
 
         return "<i class='material-icons subscribe blue-text' data-date='".$date."'>control_point</i>";
     }

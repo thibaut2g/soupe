@@ -112,7 +112,7 @@
             <h3>Partie Admin</h3>
             <p>Cette partie est uniquement visible par les administrateurs</p>
             <p>Vous pouvez cliquer sur les inscriptions du jour afin d'avoir plus d'informations sur les bénévoles (nom, email, numéro de téléphone, ...)</p>
-            <form action="/update-responsable/monday" class="col s3 formDay" method="post">
+            <form action="/update-responsable/monday" class="col s12 m3 formDay" method="post">
                 <h6><b>Lundi</b></h6>
                 <label for="responsableName" class="sr-only blue-text">Nom</label>
                 <input id="responsableName" name="name" class="border-bottom-blue" type="text"
@@ -125,7 +125,7 @@
                        placeholder="Téléphone" {% if responsables['monday'] is defined %}value="{{ responsables['monday'].phone }}"{% endif %}>
                 <input class="border-bottom-blue btn blue" type="submit" value="Enregistrer">
             </form>
-            <form action="/update-responsable/tuesday" class="col s3 formDay" method="post">
+            <form action="/update-responsable/tuesday" class="col s12 m3 formDay" method="post">
                 <h6><b>Mardi</b></h6>
                 <label for="responsableName" class="sr-only blue-text">Nom</label>
                 <input id="responsableName" name="name" class="border-bottom-blue" type="text"
@@ -138,7 +138,7 @@
                        placeholder="Téléphone" {% if responsables['tuesday'] is defined %}value="{{ responsables['tuesday'].phone }}"{% endif %}>
                 <input class="border-bottom-blue btn blue" type="submit" value="Enregistrer">
             </form>
-            <form action="/update-responsable/wednesday" class="col s3 formDay" method="post">
+            <form action="/update-responsable/wednesday" class="col s12 m3 formDay" method="post">
                 <h6><b>Mercredi</b></h6>
                 <label for="responsableName" class="sr-only blue-text">Nom</label>
                 <input id="responsableName" name="name" class="border-bottom-blue" type="text"
@@ -151,7 +151,7 @@
                        placeholder="Téléphone" {% if responsables['wednesday'] is defined %}value="{{ responsables['wednesday'].phone }}"{% endif %}>
                 <input class="border-bottom-blue btn blue" type="submit" value="Enregistrer">
             </form>
-            <form action="/update-responsable/thursday" class="col s3 formDay" method="post">
+            <form action="/update-responsable/thursday" class="col s12 m3 formDay" method="post">
                 <h6><b>Jeudi</b></h6>
                 <label for="responsableName" class="sr-only blue-text">Nom</label>
                 <input id="responsableName" name="name" class="border-bottom-blue" type="text"
@@ -164,7 +164,7 @@
                        placeholder="Téléphone" {% if responsables['thursday'] is defined %}value="{{ responsables['thursday'].phone }}"{% endif %}>
                 <input class="border-bottom-blue btn blue" type="submit" value="Enregistrer">
             </form>
-            <form action="/update-responsable/friday" class="col s3 formDay" method="post">
+            <form action="/update-responsable/friday" class="col s12 m3 formDay" method="post">
                 <h6><b>Vendredi</b></h6>
                 <label for="responsableName" class="sr-only blue-text">Nom</label>
                 <input id="responsableName" name="name" class="border-bottom-blue" type="text"
@@ -177,7 +177,7 @@
                        placeholder="Téléphone" {% if responsables['friday'] is defined %}value="{{ responsables['friday'].phone }}"{% endif %}>
                 <input class="border-bottom-blue btn blue" type="submit" value="Enregistrer">
             </form>
-            <form action="/update-responsable/saturday" class="col s3 formDay" method="post">
+            <form action="/update-responsable/saturday" class="col s12 m3 formDay" method="post">
                 <h6><b>Samedi</b></h6>
                 <label for="responsableName" class="sr-only blue-text">Nom</label>
                 <input id="responsableName" name="name" class="border-bottom-blue" type="text"
@@ -190,7 +190,7 @@
                        placeholder="Téléphone" {% if responsables['saturday'] is defined %}value="{{ responsables['saturday'].phone }}"{% endif %}>
                 <input class="border-bottom-blue btn blue" type="submit" value="Enregistrer">
             </form>
-            <form action="/update-responsable/sunday" class="col s3 formDay" method="post">
+            <form action="/update-responsable/sunday" class="col s12 m3 formDay" method="post">
                 <h6><b>Dimanche</b></h6>
                 <label for="responsableName" class="sr-only blue-text">Nom</label>
                 <input id="responsableName" name="name" class="border-bottom-blue" type="text"

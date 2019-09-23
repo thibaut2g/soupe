@@ -4,6 +4,9 @@
 
 {% block body %}
     <style>
+        body {
+            background: #eeeeee;
+        }
         .border-bottom-blue {
             border-bottom-color: #2196F3 !important;
         }
@@ -18,14 +21,14 @@
                         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}. Veuillez réessayer.</div>
                     {% endif %}
                     <p class="flow-text">Ne remplissez que l'adresse email si vous avez déjà rempli ce formulaire une fois.</p>
-                    <label for="firstaname" class="sr-only">Prénom</label>
-                    <input type="text" name="firstname" id="firstname" class="form-control border-bottom-blue" placeholder="Prénom" autofocus>
-                    <label for="name" class="sr-only">Nom</label>
-                    <input type="text" name="lastname" id="name" class="form-control border-bottom-blue" placeholder="Nom">
-                    <label for="phone" class="sr-only">Téléphone</label>
-                    <input type="tel" name="phone" id="phone" class="form-control border-bottom-blue" placeholder="Téléphone">
-                    <label for="inputEmail" class="sr-only">Email</label>
-                    <input type="email" name="email" id="inputEmail" class="form-control border-bottom-blue" placeholder="Email" required>
+                    <label for="firstname" class="sr-only blue-text">Prénom</label>
+                    <input type="text" name="firstname" id="firstname" class="form-control border-bottom-blue blue-text" placeholder="Prénom" autofocus>
+                    <label for="name" class="sr-only blue-text">Nom</label>
+                    <input type="text" name="lastname" id="name" class="form-control border-bottom-blue blue-text" placeholder="Nom">
+                    <label for="phone" class="sr-only blue-text">Téléphone</label>
+                    <input type="tel" name="phone" id="phone" class="form-control border-bottom-blue blue-text" placeholder="Téléphone">
+                    <label for="inputEmail" class="sr-only blue-text">Email</label>
+                    <input type="email" name="email" id="inputEmail" class="form-control border-bottom-blue blue-text" placeholder="Email" required>
 
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 

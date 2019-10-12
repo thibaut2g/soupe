@@ -56,11 +56,11 @@ class CalendarService
         if (count($subscriptions) >= 5)
             return false;
 
-        foreach($subscriptions as $subscription) {
+/**        foreach($subscriptions as $subscription) {
             if ($subscription->getUserId() == $userId)
                 return false;
         }
-
+*/
 
         $subscription = new Subscription();
         $subscription->setDate($date);
@@ -182,7 +182,8 @@ class CalendarService
             ->findBy(['date' => $askedDate, "userId" => $userId, "isRemoved" => NULL]);
 
         if (!empty($subscriptions))
-            return "<i class='material-icons unsubscribe red-text' data-date='".$date."'>highlight_off</i>";
+            return "<i class='material-icons subscribe blue-text' data-date='".$date."'>control_point</i>
+                    <i class='material-icons unsubscribe red-text' data-date='".$date."'>highlight_off</i>";
 
         return "<i class='material-icons subscribe blue-text' data-date='".$date."'>control_point</i>";
     }

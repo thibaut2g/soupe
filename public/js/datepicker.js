@@ -97,7 +97,7 @@ for (let user of userInfos) {
                 if(httpRequest.responseText === "ok") {
                     alert("Inscription validée");
                 } else {
-                    alert("Erreur : il y a déjà 5 personnes ce jour là ou bien vous y êtes déjà inscrit.");
+                    alert("Erreur : veuillez contacter les organisateurs.");
                 }
             }
         }
@@ -116,7 +116,6 @@ for (let user of userInfos) {
 
     function makeRequest(date) {
         var askedDate = date.split("-");
-        console.log(askedDate);
         if (confirm("Confirmer votre inscription pour le " + askedDate[2] + "/" + askedDate[1] + "/" + askedDate[0])) {
             httpRequest = new XMLHttpRequest();
 
@@ -138,7 +137,7 @@ for (let user of userInfos) {
                 if(httpRequest.responseText === "ok") {
                     location.reload();
                 } else {
-                    alert("Erreur : il y a déjà 5 personnes ce jour là ou bien vous y êtes déjà inscrit.");
+                    alert("Erreur : veuillez contacter les organisateurs.");
                 }
             }
         }

@@ -21,6 +21,12 @@ class CalendarController extends AbstractController
     public function saveDate(CalendarService $calendarService, $date)
     {
         $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
+
+        // interdiction de s'inscrire avec le compte administrateur
+        if ($userId == 42) {
+            return new Response("compte admin");
+        }
+
         try {
             if ($calendarService->saveDate($userId, $date)) {
                 $response = "ok";

@@ -53,7 +53,7 @@ class CalendarService
 
         $subscriptions = $this->em->getRepository(Subscription::class)
             ->findBy(['date' => $date, "isRemoved" => NULL]);
-        if (count($subscriptions) >= 5)
+        if (count($subscriptions) >= 8)
             return false;
 
 /**        foreach($subscriptions as $subscription) {
@@ -94,7 +94,7 @@ class CalendarService
         $tbody = '';
 
         // 5 participants maximum
-        for ($i = 1; $i <= 5; $i++) {
+        for ($i = 1; $i <= 8; $i++) {
             $tr = '';
             $count = 0;
 
@@ -104,7 +104,7 @@ class CalendarService
                 if ($date && is_object($date)) {
                     $tr .= $this->getUserSubscription($date->getUserId(), $userId);
                     $count++;
-                } elseif($i == 5) {
+                } elseif($i == 8) {
                     $tr .= $this->getSubscribeButton($date, $userId);
                 } else {
                     array_push($calendar[$day], $date);

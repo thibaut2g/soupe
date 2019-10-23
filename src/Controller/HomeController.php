@@ -42,6 +42,9 @@ class HomeController extends AbstractController
     public function home(CalendarService $calendarService, ResponsableService $responsableService)
     {
         $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
+
+        $isAdmin = ($userId == 42);
+      
         $tbody = $calendarService->getTbody($userId);
         $weekDays = $calendarService->getWeekDays();
         $nextMonday = $calendarService->getNextMonday();
@@ -55,7 +58,8 @@ class HomeController extends AbstractController
             'tbody' => $tbody,
             'nextMonday' => $nextMonday,
             'lastMonday' => $lastMonday,
-            'responsables' => $responsables
+            'responsables' => $responsables,
+            'isAdmin' => $isAdmin
         ]);
     }
 
@@ -76,6 +80,8 @@ class HomeController extends AbstractController
         $lastMonday = $calendarService->getLastMonday($monday);
         $responsables = $responsableService->getResponsables();
 
+        $isAdmin = ($userId == 42);
+
         return $this->render('home/index.html.twig', [
             'weekDays' => $weekDays,
             'weekNumber' => date('W', strtotime($monday)),
@@ -83,7 +89,8 @@ class HomeController extends AbstractController
             'tbody' => $tbody,
             'nextMonday' => $nextMonday,
             'lastMonday' => $lastMonday,
-            'responsables' => $responsables
+            'responsables' => $responsables,
+            'isAdmin' => $isAdmin
         ]);
     }
 

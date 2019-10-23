@@ -42,7 +42,6 @@ class HomeController extends AbstractController
     public function home(CalendarService $calendarService, ResponsableService $responsableService)
     {
         $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
-
         $tbody = $calendarService->getTbody($userId);
         $weekDays = $calendarService->getWeekDays();
         $nextMonday = $calendarService->getNextMonday();

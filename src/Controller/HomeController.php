@@ -44,7 +44,7 @@ class HomeController extends AbstractController
         $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
 
         $isAdmin = ($userId == 42);
-
+      
         $tbody = $calendarService->getTbody($userId);
         $weekDays = $calendarService->getWeekDays();
         $nextMonday = $calendarService->getNextMonday();

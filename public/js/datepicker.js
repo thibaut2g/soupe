@@ -92,12 +92,12 @@ for (let user of userInfos) {
     function alertContents() {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status !== 200) {
-                alert('Suite à une erreur la date n\'a pu être enregistrée');
+                alert('Erreur de connexion, veuillez réessayer');
             } else {
                 if(httpRequest.responseText === "ok") {
                     alert("Inscription validée");
                 } else {
-                    alert("Erreur : veuillez contacter les organisateurs.");
+                    alert("Nombre maximum de participants atteint ou veuillez contacter l'administrateur du site.");
                 }
             }
         }
@@ -132,12 +132,12 @@ for (let user of userInfos) {
     function alertContents() {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status !== 200) {
-                alert('Suite à une erreur la date n\'a pu être enregistrée');
+                alert('Erreur de connexion, veuillez réessayer');
             } else {
                 if(httpRequest.responseText === "ok") {
                     location.reload();
                 } else {
-                    alert("Erreur : veuillez contacter les organisateurs.");
+                    alert("Nombre maximum de participants atteint ou veuillez contacter l'administrateur du site. thibaut.de-gouberville@2018.icam.fr.");
                 }
             }
         }

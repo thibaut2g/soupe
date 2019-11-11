@@ -92,7 +92,7 @@ for (let user of userInfos) {
     function alertContents() {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status !== 200) {
-                alert('Erreur de connexion, veuillez réessayer');
+                alert('Merci de vérifier que votre inscription a bien été prise en compte.');
             } else {
                 if(httpRequest.responseText === "ok") {
                     alert("Inscription validée");
@@ -132,7 +132,7 @@ for (let user of userInfos) {
     function alertContents() {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status !== 200) {
-                alert('Erreur de connexion, veuillez réessayer');
+                alert('Merci de vérifier que votre inscription a bien été prise en compte.');
             } else {
                 if(httpRequest.responseText === "ok") {
                     location.reload();

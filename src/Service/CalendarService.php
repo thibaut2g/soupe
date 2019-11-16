@@ -113,7 +113,7 @@ class CalendarService
                 $tr .= "</td>";
             }
 
-            if ($count == 0) {
+            if ($count == 0 && $i != 6) {
                 $tbody .= $this->getSubscribeButtons($calendar, $userId);
                 break;
             }

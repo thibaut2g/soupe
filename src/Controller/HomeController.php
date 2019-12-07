@@ -41,7 +41,7 @@ class HomeController extends AbstractController
      */
     public function home(CalendarService $calendarService, ResponsableService $responsableService)
     {
-        $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
+        $userId = $this->getUser()->getId();
 
         $isAdmin = ($userId == 42);
       

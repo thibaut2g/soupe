@@ -2,15 +2,18 @@
 
 namespace App\Service;
 
+use App\Entity\ActiveDate;
 use App\Entity\Subscription;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CalendarService
 {
+    const ROW_MIN_PARTICIPANT = 1;
+    const ROW_MAX_PARTICIPANT = 6;
     private $em;
 
-    static $months = [
+    private const MONTHS = [
         'Janvier' => "01",
         'Février' => "02",
         'Mars' => "03",
@@ -25,7 +28,7 @@ class CalendarService
         'Decembre' => "12"
     ];
 
-    static $week = [
+    private const WEEK_DAYS = [
         'monday',
         'tuesday',
         'wednesday',
@@ -74,7 +77,7 @@ class CalendarService
     {
         $date = explode(" ", $date);
 
-        $date = $date[3]."-".self::$months[$date[2]]."-".$date[1];
+        $date = $date[3]."-".self::MONTHS[$date[2]]."-".$date[1];
 
         if (!$this->validateDate($date))
             return "2019-01-01";
@@ -89,31 +92,30 @@ class CalendarService
         else
             $monday = new \DateTime($monday);
 
-        $calendar = $this->getCalendar($monday);
+        $calendar = $this->getCalendarSubscriptionByDayBeginningBy($monday);
 
         $tbody = '';
 
-        // 5 participants maximum
-        for ($i = 1; $i <= 6; $i++) {
-            $tr = '';
-            $count = 0;
+        for ($rowNumber = self::ROW_MIN_PARTICIPANT; $rowNumber <= self::ROW_MAX_PARTICIPANT; $rowNumber++) {
 
-            foreach (self::$week as $day) {
+            $tr = '';
+            $lineCount = 0;
+
+            foreach (self::WEEK_DAYS as $day) {
                 $tr .= "<td>";
-                $date = array_pop($calendar[$day]);
-                if ($date && is_object($date)) {
-                    $tr .= $this->getUserSubscription($date->getUserId(), $userId);
-                    $count++;
-                } elseif($i == 6) {
-                    $tr .= $this->getSubscribeButton($date, $userId);
-                } else {
-                    array_push($calendar[$day], $date);
-                }
+
+                    if(!empty($calendar[$day][$rowNumber])) {
+                        /* @var \App\Entity\Subscription $date */
+                        $date = $calendar[$day][$rowNumber];
+
+                        $tr .= $this->getUserSubscription($date->getUserId(), $userId);
+                        $lineCount++;
+                    }
 
                 $tr .= "</td>";
             }
 
-            if ($count == 0 && $i != 6) {
+            if ($lineCount == 0 OR $rowNumber == self::ROW_MAX_PARTICIPANT) {
                 $tbody .= $this->getSubscribeButtons($calendar, $userId);
                 break;
             }
@@ -134,7 +136,7 @@ class CalendarService
 
 
         for ($i = 0; $i <= 6; $i++) {
-            $weekDays[self::$week[$i]] = $date->format('d');
+            $weekDays[self::WEEK_DAYS[$i]] = $date->format('d');
             $date->modify('+1 day');
         }
         return $weekDays;
@@ -164,9 +166,9 @@ class CalendarService
         return $date->format('Y-m-d');
     }
 
-    private function getCalendar($date)
+    private function getCalendarSubscriptionByDayBeginningBy($date)
     {
-        foreach (self::$week as $day) {
+        foreach (self::WEEK_DAYS as $day) {
             $calendar[$day] =  $this->em->getRepository(Subscription::class)
                 ->findBy(['date' => $date, 'isRemoved' => NULL]);
             array_unshift($calendar[$day], $date->format('Y-m-d'));
@@ -192,10 +194,15 @@ class CalendarService
     {
         $subscribeButtons = "<tr>";
 
-        foreach (self::$week as $day) {
+        foreach (self::WEEK_DAYS as $day) {
             $subscribeButtons .= "<td>";
-            $date = array_pop($calendar[$day]);
-            $subscribeButtons .= $this->getSubscribeButton($date, $userId);
+            $date = $calendar[$day][0];
+            if ($this->isActive($date)) {
+
+                $subscribeButtons .= $this->getSubscribeButton($date, $userId);
+            } else {
+                $subscribeButtons .= $this->getCloseButton();
+            }
 
             $subscribeButtons .= "</td>";
         }
@@ -248,5 +255,26 @@ class CalendarService
 
 
         return $result;
+    }
+
+    private function getCloseButton()
+    {
+        return "<i class='material-icons'>clear</i>";
+    }
+
+    private function isActive($date)
+    {
+        $date = new \DateTime($date);
+
+        $day = $date->format('l');
+
+        if ('Sunday' == $day) {
+            return false;
+        }
+
+        $isUnActive = $this->em->getRepository(ActiveDate::class)
+            ->findBy(['date' => $date]);
+
+        return !$isUnActive;
     }
 }

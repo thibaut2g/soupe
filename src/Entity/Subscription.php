@@ -27,6 +27,11 @@ class Subscription
     private $date;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    private $type;
+
+    /**
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $isRemoved;
@@ -71,5 +76,21 @@ class Subscription
         $this->isRemoved = $isRemoved;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param mixed $type
+     */
+    public function setType($type): void
+    {
+        $this->type = $type;
     }
 }

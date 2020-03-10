@@ -1,0 +1,115 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Service Sacré Coeur{% endblock %}
+
+{% block body %}
+
+    <style>
+        body {
+            background-color: #FFDAA1 ;
+        }
+        .subscribe, .unsubscribe {
+            cursor: pointer;
+        }
+        .subscribe:hover {
+            color: #00af00 !important;
+        }
+        .unsubscribe:hover {
+            color: #d10000 !important;
+        }
+        {% if is_granted('ROLE_ADMIN') %}
+        .userinfo {
+            cursor: pointer;
+        }
+        {% endif %}
+        .border-bottom-blue {
+            border-bottom-color: #2196F3 !important;
+        }
+        .formDay {
+            padding: 10px;
+            border: 1px solid black;
+            margin: 2px;
+        }
+    </style>
+
+    <div class="container">
+        <div class="right-align">
+            <a href="/home" class="btn blue">Retour</a>
+            <a href="/logout" class="btn red">Déconnexion</a>
+        </div>
+        <h3 class="center">Je ramène de la soupe</h3>
+
+        <div class="row">
+            <div class="col m3 s12">
+                <form id="datepicker_form">
+                    <div class="row">
+                        <p class="flow-text">Choisir une date : </p>
+                        <div class="input-field">
+                            <input type="text" class="datepicker" id="datepicker" placeholder="Cliquez ici pour choisir une date">
+                        </div>
+                        <div class="input-field">
+                            <input class="btn blue" type="submit" value="Enregistrer">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col s12 m8 offset-m1 center">
+                <p class="flow-text ">
+                    <a class="btn white left" href="{{ path('monday_soupe', {"monday" : lastMonday}) }}"><i class="material-icons grey-text">navigate_before</i></a>
+                    <b>{{ month }}</b> - Semaine N° {{ weekNumber }}
+                    <a class="btn white right" href="{{ path('monday_soupe', {"monday" : nextMonday}) }}"><i class="material-icons grey-text">navigate_next</i></a>
+                </p>
+
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Lundi {{ weekDays.monday }}</th>
+                        <th>Mardi {{ weekDays.tuesday }}</th>
+                        <th>Mercredi {{ weekDays.wednesday }}</th>
+                        <th>Jeudi {{ weekDays.thursday }}</th>
+                        <th>Vendredi {{ weekDays.friday }}</th>
+                        <th>Samedi {{ weekDays.saturday }}</th>
+                        <th>Dimanche {{ weekDays.sunday }}</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% autoescape %}
+                        {{ tbody | raw}}
+                    {% endautoescape %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col s12 m8 offset-m4">
+                <p class="flow-text red-text text-darken-2">Maximum 5 participants par jour.</p>
+            </div>
+            {% if (isAdmin) %}
+                <div class="col s12 m8 offset-m4 center">
+                    <p class="flow-text red-text text-darken-1">Vous ne pouvez pas vous inscrire avec le compte administrateur. Pour cela merci de vous déconnecter et de vous reconnecter avec votre adresse email.</p>
+                </div>
+            {% endif %}
+        </div>
+        <div class="row">
+            <div class="col m6 s12">
+                <ul class="collapsible">
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">info_outline</i>Informations / Horaires</div>
+                        <div class="collapsible-body">
+                            <p>Merci de ramener la soupe un peu avant 19h au 40 rue des Bouchers de Perthe et de sonner en arrivant. Nous vous remercions pour votre générosité.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col s12 m8 offset-m4">
+            <p>En cas de problème, veuillez contacter l'administrateur du site : <b>thibaut.de-gouberville@2018.icam.fr</b></p>
+        </div>
+        <div style="display: none" id="type">soupe</div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/datepicker.js') }}"></script>
+{% endblock %}

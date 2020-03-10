@@ -46,17 +46,18 @@ class CalendarService
     /**
      * @param $userId
      * @param $date
+     * @param $type
      * @return bool
      */
-    public function saveDate($userId, $date)
+    public function saveDate($userId, $date, $type)
     {
         if (!$this->validateDate($date))
             $date = $this->getFormattedDate($date);
         $date = new \DateTime($date);
 
         $subscriptions = $this->em->getRepository(Subscription::class)
-            ->findBy(['date' => $date, "isRemoved" => NULL]);
-        if (count($subscriptions) >= 5)
+            ->findBy(['date' => $date, "type" => $type, "isRemoved" => NULL]);
+        if (count($subscriptions) >= 5 || $this->isASunday($date))
             return false;
 
 /**        foreach($subscriptions as $subscription) {
@@ -67,6 +68,7 @@ class CalendarService
 
         $subscription = new Subscription();
         $subscription->setDate($date);
+        $subscription->setType($type);
         $subscription->setUserId($userId);
         $this->em->persist($subscription);
         $this->em->flush();
@@ -85,14 +87,14 @@ class CalendarService
         return $date;
     }
 
-    public function getTbody($userId, $monday = false)
+    public function getTbody($userId, $monday = false, $type = "main")
     {
         if (false === $monday)
             $monday = new \DateTime('monday this week');
         else
             $monday = new \DateTime($monday);
 
-        $calendar = $this->getCalendarSubscriptionByDayBeginningBy($monday);
+        $calendar = $this->getCalendarSubscriptionByDayBeginningBy($monday, $type);
 
         $tbody = '';
 
@@ -116,7 +118,7 @@ class CalendarService
             }
 
             if ($lineCount == 0 OR $rowNumber == self::ROW_MAX_PARTICIPANT) {
-                $tbody .= $this->getSubscribeButtons($calendar, $userId);
+                $tbody .= $this->getSubscribeButtons($calendar, $userId, $type);
                 break;
             }
 
@@ -166,22 +168,23 @@ class CalendarService
         return $date->format('Y-m-d');
     }
 
-    private function getCalendarSubscriptionByDayBeginningBy($date)
+    private function getCalendarSubscriptionByDayBeginningBy($date, $type)
     {
         foreach (self::WEEK_DAYS as $day) {
             $calendar[$day] =  $this->em->getRepository(Subscription::class)
-                ->findBy(['date' => $date, 'isRemoved' => NULL]);
+                ->findBy(['date' => $date, "type" => $type, 'isRemoved' => NULL]);
             array_unshift($calendar[$day], $date->format('Y-m-d'));
             $date->modify('+1 day');
         }
         return $calendar;
     }
 
-    private function getSubscribeButton($date, $userId)
+
+    private function getSubscribeButton($date, $userId, $type)
     {
         $askedDate = new \DateTime($date);
         $subscriptions = $this->em->getRepository(Subscription::class)
-            ->findBy(['date' => $askedDate, "userId" => $userId, "isRemoved" => NULL]);
+            ->findBy(['date' => $askedDate, "userId" => $userId, "type" => $type, "isRemoved" => NULL]);
 
         if (!empty($subscriptions))
             return "<i class='material-icons subscribe blue-text' data-date='".$date."'>control_point</i>
@@ -190,7 +193,8 @@ class CalendarService
         return "<i class='material-icons subscribe blue-text' data-date='".$date."'>control_point</i>";
     }
 
-    private function getSubscribeButtons($calendar, $userId)
+
+    private function getSubscribeButtons($calendar, $userId, $type)
     {
         $subscribeButtons = "<tr>";
 
@@ -198,8 +202,7 @@ class CalendarService
             $subscribeButtons .= "<td>";
             $date = $calendar[$day][0];
             if ($this->isActive($date)) {
-
-                $subscribeButtons .= $this->getSubscribeButton($date, $userId);
+                $subscribeButtons .= $this->getSubscribeButton($date, $userId, $type);
             } else {
                 $subscribeButtons .= $this->getCloseButton();
             }
@@ -217,11 +220,11 @@ class CalendarService
         return $d && $d->format('Y-m-d') === $date;
     }
 
-    public function unsubscribeDate($userId, $date)
+    public function unsubscribeDate($userId, $date, $type)
     {
         $date = new \DateTime($date);
         $subscriptions = $this->em->getRepository(Subscription::class)
-            ->findBy(['date' => $date, "userId" => $userId, "isRemoved" => NULL]);
+            ->findBy(['date' => $date, "userId" => $userId, "type" => $type, "isRemoved" => NULL]);
         foreach ($subscriptions as $subscription) {
             $subscription->setIsRemoved(true);
             $this->em->persist($subscription);
@@ -276,5 +279,10 @@ class CalendarService
             ->findBy(['date' => $date]);
 
         return !$isUnActive;
+    }
+
+    private function isASunday($date)
+    {
+        return $date->format('D') == 'Sun';
     }
 }

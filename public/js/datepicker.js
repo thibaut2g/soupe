@@ -66,6 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 var userInfos = document.getElementsByClassName("userinfo");
+var type = document.getElementById("type").textContent;
 
 for (let user of userInfos) {
     user.addEventListener('click', function(){user.nextSibling.classList.toggle("hiddendiv");
@@ -85,7 +86,7 @@ for (let user of userInfos) {
             return false;
         }
         httpRequest.onreadystatechange = alertContents;
-        httpRequest.open('GET', '/saveDate/' + date);
+        httpRequest.open('GET', '/saveDate/' + type + "/" + date);
         httpRequest.send();
     }
 
@@ -110,7 +111,7 @@ for (let user of userInfos) {
     var subscribes = document.getElementsByClassName("subscribe");
 
     for (let item of subscribes) {
-        item.addEventListener('click', function(){makeRequest(item.dataset.date)});
+        item.addEventListener('click', function(){  makeRequest(item.dataset.date)});
     }
 
 
@@ -124,7 +125,7 @@ for (let user of userInfos) {
                 return false;
             }
             httpRequest.onreadystatechange = alertContents;
-            httpRequest.open('GET', '/saveDate/' + date);
+            httpRequest.open('GET', '/saveDate/' + type + "/" + date);
             httpRequest.send();
         }
     }
@@ -157,7 +158,6 @@ for (let user of userInfos) {
 
     function makeRequest(date) {
         var askedDate = date.split("-");
-        console.log(askedDate);
         if (confirm("Se désinscrire de cette date : " + askedDate[2] + "/" + askedDate[1] + "/" + askedDate[0] + " ?")) {
             httpRequest = new XMLHttpRequest();
 
@@ -166,7 +166,7 @@ for (let user of userInfos) {
                 return false;
             }
             httpRequest.onreadystatechange = alertContents;
-            httpRequest.open('GET', '/unsubscribeDate/' + date);
+            httpRequest.open('GET', '/unsubscribeDate/' + type + "/" + date);
             httpRequest.send();
         }
     }

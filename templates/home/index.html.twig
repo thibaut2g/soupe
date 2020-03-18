@@ -34,11 +34,16 @@
 
 <div class="container">
     <div class="right-align">
-        <a href="/soupe" class="btn green">Je ramène de la soupe</a>
+<!--        <a href="/soupe" class="btn green">Je ramène de la soupe</a>  -->
         <a href="/logout" class="btn red">Déconnexion</a>
     </div>
     <h3 class="center">Inscription à la soupe du Sacré Coeur</h3>
-
+    <div class="row" style="text-align: justify; margin-top: 20%">
+        <p class="flow-text">
+            En raison de la crise sanitaire, le service de la soupe du Sacré Coeur est temporairement fermé.
+        </p>
+    </div>
+<!--
     <div class="row">
         <div class="col m3 s12">
             <form id="datepicker_form">
@@ -75,9 +80,9 @@
                 </thead>
 
                 <tbody>
-                    {% autoescape %}
-                        {{ tbody | raw}}
-                    {% endautoescape %}
+                {% autoescape %}
+                    {{ tbody | raw}}
+                {% endautoescape %}
                 </tbody>
             </table>
         </div>
@@ -85,9 +90,9 @@
             <p class="flow-text red-text text-darken-2">Maximum 5 participants par jour.</p>
         </div>
         {% if (isAdmin) %}
-        <div class="col s12 m8 offset-m4 center">
-            <p class="flow-text red-text text-darken-1">Vous ne pouvez pas vous inscrire avec le compte administrateur. Pour cela merci de vous déconnecter et de vous reconnecter avec votre adresse email.</p>
-        </div>
+            <div class="col s12 m8 offset-m4 center">
+                <p class="flow-text red-text text-darken-1">Vous ne pouvez pas vous inscrire avec le compte administrateur. Pour cela merci de vous déconnecter et de vous reconnecter avec votre adresse email.</p>
+            </div>
         {% endif %}
     </div>
     <div class="row">
@@ -221,6 +226,8 @@
             </form>
         </div>
     {% endif %}
+
+    -->
 </div>
 {% endblock %}
 

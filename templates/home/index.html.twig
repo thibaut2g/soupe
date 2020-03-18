@@ -6,7 +6,7 @@
 
 <style>
     body {
-        background: #eeeeee;
+        background-color: #e0e0e0;
     }
     .subscribe, .unsubscribe {
         cursor: pointer;
@@ -34,6 +34,7 @@
 
 <div class="container">
     <div class="right-align">
+        <a href="/soupe" class="btn green">Je ramène de la soupe</a>
         <a href="/logout" class="btn red">Déconnexion</a>
     </div>
     <h3 class="center">Inscription à la soupe du Sacré Coeur</h3>
@@ -119,6 +120,7 @@
     <div class="col s12 m8 offset-m4">
         <p>En cas de problème, veuillez contacter l'administrateur du site : <b>thibaut.de-gouberville@2018.icam.fr</b></p>
     </div>
+    <div style="display: none" id="type">main</div>
     {% if is_granted('ROLE_ADMIN') %}
 
         <div class="row">
@@ -224,5 +226,5 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('js/datepicker.js') }}"></script>
+    <script src="{{ asset('js/datepicker2.js') }}"></script>
 {% endblock %}

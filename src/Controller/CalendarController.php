@@ -13,12 +13,13 @@ class CalendarController extends AbstractController
 {
 
     /**
-     * @Route("/saveDate/{date}", name="saveDate")
+     * @Route("/saveDate/{type}/{date}", name="saveDate")
      * @param CalendarService $calendarService
+     * @param $type
      * @param $date
      * @return Response
      */
-    public function saveDate(CalendarService $calendarService, $date)
+    public function saveDate(CalendarService $calendarService, $type, $date)
     {
         $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
 
@@ -28,7 +29,7 @@ class CalendarController extends AbstractController
         }
 
         try {
-            if ($calendarService->saveDate($userId, $date)) {
+            if ($calendarService->saveDate($userId, $date, $type)) {
                 $response = "ok";
             } else {
                 $response = "ko";
@@ -42,16 +43,17 @@ class CalendarController extends AbstractController
     }
 
     /**
-     * @Route("/unsubscribeDate/{date}", name="unsubscribeDate")
+     * @Route("/unsubscribeDate/{type}/{date}", name="unsubscribeDate")
      * @param CalendarService $calendarService
+     * @param $type
      * @param $date
      * @return Response
      */
-    public function unsubscribeDate(CalendarService $calendarService, $date)
+    public function unsubscribeDate(CalendarService $calendarService, $type, $date)
     {
         $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
         try {
-            if ($calendarService->unsubscribeDate($userId, $date)) {
+            if ($calendarService->unsubscribeDate($userId, $date, $type)) {
                 $response = "ok";
             } else {
                 $response = "ko";

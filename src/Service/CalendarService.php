@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class CalendarService
 {
     const ROW_MIN_PARTICIPANT = 1;
-    const ROW_MAX_PARTICIPANT = 6;
+    const MAX_PARTICIPANT = 3;
     private $em;
 
     private const MONTHS = [
@@ -57,7 +57,7 @@ class CalendarService
 
         $subscriptions = $this->em->getRepository(Subscription::class)
             ->findBy(['date' => $date, "type" => $type, "isRemoved" => NULL]);
-        if (count($subscriptions) >= 5 || $this->isASunday($date))
+        if (count($subscriptions) >= self::MAX_PARTICIPANT || $this->isASunday($date))
             return false;
 
 /**        foreach($subscriptions as $subscription) {
@@ -98,7 +98,7 @@ class CalendarService
 
         $tbody = '';
 
-        for ($rowNumber = self::ROW_MIN_PARTICIPANT; $rowNumber <= self::ROW_MAX_PARTICIPANT; $rowNumber++) {
+        for ($rowNumber = self::ROW_MIN_PARTICIPANT; $rowNumber <= (self::MAX_PARTICIPANT + 1); $rowNumber++) {
 
             $tr = '';
             $lineCount = 0;
@@ -117,7 +117,7 @@ class CalendarService
                 $tr .= "</td>";
             }
 
-            if ($lineCount == 0 OR $rowNumber == self::ROW_MAX_PARTICIPANT) {
+            if ($lineCount == 0 OR $rowNumber == (self::MAX_PARTICIPANT + 1)) {
                 $tbody .= $this->getSubscribeButtons($calendar, $userId, $type);
                 break;
             }

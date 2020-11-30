@@ -167,6 +167,74 @@
                 </li>
             </ul>
         </div>
+        <div class="col s12">
+            <ul class="collapsible">
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">person_pin</i>Liste des responsables</div>
+                    <div class="collapsible-body">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Lundi</th>
+                                <th>Mardi</th>
+                                <th>Mercredi</th>
+                                <th>Jeudi</th>
+                                <th>Vendredi</th>
+                                <th>Samedi</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr>
+                                <td>
+                                    {{ responsables.monday.name }}
+                                    <br>
+                                    {{ responsables.monday.email }}
+                                    <br>
+                                    {{ responsables.monday.phone }}
+                                </td>
+                                <td>
+                                    {{ responsables.tuesday.name }}
+                                    <br>
+                                    {{ responsables.tuesday.email }}
+                                    <br>
+                                    {{ responsables.tuesday.phone }}
+                                </td>
+                                <td>
+                                    {{ responsables.wednesday.name }}
+                                    <br>
+                                    {{ responsables.wednesday.email }}
+                                    <br>
+                                    {{ responsables.wednesday.phone }}
+                                </td>
+                                <td>
+                                    {{ responsables.thursday.name }}
+                                    <br>
+                                    {{ responsables.thursday.email }}
+                                    <br>
+                                    {{ responsables.thursday.phone }}
+                                </td>
+                                <td>
+                                    {{ responsables.friday.name }}
+                                    <br>
+                                    {{ responsables.friday.email }}
+                                    <br>
+                                    {{ responsables.friday.phone }}
+                                </td>
+                                <td>
+                                    {{ responsables.saturday.name }}
+                                    <br>
+                                    {{ responsables.saturday.email }}
+                                    <br>
+                                    {{ responsables.saturday.phone }}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
     <div class="col s12 m8 offset-m4">
         <p>En cas de problème, veuillez contacter l'administrateur du site : <b>thibaut.de-gouberville@2018.icam.fr</b></p>

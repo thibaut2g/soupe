@@ -39,7 +39,7 @@ class SoupeController extends AbstractController
     {
         $userId = $this->getUser()->getId();
 
-        $isAdmin = ($userId == 42);
+        $isAdmin = $this->isGranted("ROLE_ADMIN");
 
         $tbody = $calendarService->getTbody($userId, false, "soupe");
         $weekDays = $calendarService->getWeekDays();

@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class CalendarService
 {
     const ROW_MIN_PARTICIPANT = 1;
-    const MAX_PARTICIPANT = 3;
+    const MAX_PARTICIPANT = 5;
     private $em;
 
     private const MONTHS = [

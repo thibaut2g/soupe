@@ -43,7 +43,7 @@ class HomeController extends AbstractController
     {
         $userId = $this->getUser()->getId();
 
-        $isAdmin = ($userId == 42);
+        $isAdmin = $this->isGranted("ROLE_ADMIN");
       
         $tbody = $calendarService->getTbody($userId);
         $weekDays = $calendarService->getWeekDays();
@@ -80,7 +80,7 @@ class HomeController extends AbstractController
         $lastMonday = $calendarService->getLastMonday($monday);
         $responsables = $responsableService->getResponsables();
 
-        $isAdmin = ($userId == 42);
+        $isAdmin = $this->isGranted("ROLE_ADMIN");
 
         return $this->render('home/index.html.twig', [
             'weekDays' => $weekDays,

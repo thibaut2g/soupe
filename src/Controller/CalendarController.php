@@ -24,7 +24,7 @@ class CalendarController extends AbstractController
         $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
 
         // interdiction de s'inscrire avec le compte administrateur
-        if ($userId == 42) {
+        if ($this->isGranted("ROLE_ADMIN")) {
             return new Response("compte admin");
         }
 

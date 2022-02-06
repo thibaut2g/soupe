@@ -51,8 +51,12 @@ class CalendarService
      */
     public function saveDate($userId, $date, $type)
     {
-        if (!$this->validateDate($date))
+        if (!$this->validateDate($date)) {
             $date = $this->getFormattedDate($date);
+            if (!$date) {
+                return false;
+            }
+        }
         $date = new \DateTime($date);
 
         $subscriptions = $this->em->getRepository(Subscription::class)
@@ -82,7 +86,7 @@ class CalendarService
         $date = $date[3]."-".self::MONTHS[$date[2]]."-".$date[1];
 
         if (!$this->validateDate($date))
-            return "2019-01-01";
+            return false;
 
         return $date;
     }

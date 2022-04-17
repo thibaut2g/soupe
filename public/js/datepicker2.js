@@ -69,7 +69,7 @@ var userInfos = document.getElementsByClassName("userinfo");
 var type = document.getElementById("type").textContent;
 
 for (let user of userInfos) {
-    user.addEventListener('click', function(){user.nextSibling.classList.toggle("hiddendiv");
+    user.addEventListener('click', function(){user.nextSibling.nextSibling.classList.toggle("hiddendiv");
     });
 }
 

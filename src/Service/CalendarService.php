@@ -6,6 +6,7 @@ use App\Entity\ActiveDate;
 use App\Entity\Subscription;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Twig\Environment;
 
 class CalendarService
 {
@@ -38,9 +39,12 @@ class CalendarService
         'sunday'
     ];
 
-    public function __construct(EntityManagerInterface $entityManager)
+    private $twig;
+
+    public function __construct(EntityManagerInterface $entityManager, Environment $twig)
     {
         $this->em = $entityManager;
+        $this->twig = $twig;
     }
 
     /**
@@ -246,22 +250,11 @@ class CalendarService
         $selfUser = $this->em->getRepository(User::class)
             ->findOneBy(['id' => $SelfUserId]);
 
-        $result = ($SelfUserId == $userId) ? "<i class=\"material-icons green-text userinfo\">verified_user</i>" : "<i class=\"material-icons grey-text userinfo\">verified_user</i>";
-
-        if (in_array('ROLE_ADMIN', $selfUser->getRoles()))
-            $result .= "<div class=\"card blue-grey darken-1 hiddendiv\" style='position: absolute'>
-                            <div class=\"card-content white-text\">
-                              <span class=\"card-title\">".$user->getNomComplet()."</span>
-                              <p>
-                                ".$user->getEmail()."
-                                <br>
-                                ".$user->getPhone()."
-                              </p>
-                            </div>
-                          </div>";
-
-
-        return $result;
+        return $this->twig->render('helper/subscribeButton.html.twig', [
+            'isCurrentUser' => ($SelfUserId == $userId),
+            'isAdmin' => in_array('ROLE_ADMIN', $selfUser->getRoles()),
+            "user" => $user
+        ]);
     }
 
     private function getCloseButton()

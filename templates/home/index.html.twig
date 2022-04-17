@@ -5,42 +5,26 @@
 {% block body %}
 
 <style>
-    body {
-        background-color: #e0e0e0;
-    }
-    .subscribe, .unsubscribe {
-        cursor: pointer;
-    }
-    .subscribe:hover {
-        color: #00af00 !important;
-    }
-    .unsubscribe:hover {
-        color: #d10000 !important;
-    }
     {% if is_granted('ROLE_ADMIN') %}
         .userinfo {
             cursor: pointer;
         }
     {% endif %}
-    .border-bottom-blue {
-        border-bottom-color: #2196F3 !important;
-    }
-    .formDay {
-        padding: 10px;
-        border: 1px solid black;
-        margin: 2px;
-    }
 </style>
 
 <div class="container">
     <div class="right-align">
-        <a href="/soupe" class="btn green">Je ramène de la soupe</a>
-        <a href="/logout" class="btn red">Déconnexion</a>
-    </div>
-    <h3 class="center">Inscription à la soupe du Sacré Coeur</h3>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('admin') }}" class="btn grey">Administration</a>
+        {% endif %}
 
-    <div class="row center red-text" style="margin: 50px; border: 2px solid red">
-        <h4 >Le service de la soupe se termine cette année le 23 avril.</h4>
+        <a href="{{ path('soupe') }}" class="btn green">Je ramène de la soupe</a>
+        <a href="{{ path('app_logout') }}" class="btn red">Déconnexion</a>
+    </div>
+    <h1 class="center">Inscription à la soupe du Sacré Coeur</h1>
+
+    <div class="row center red-text" style="margin: 20px; border: 2px solid red">
+        <p class="flow-text">Le service de la soupe se termine cette année le 23 avril.</p>
     </div>
     <div class="row">
         <div class="col m3 s12">
@@ -51,7 +35,7 @@
                         <input type="text" class="datepicker" id="datepicker" placeholder="Cliquez ici pour choisir une date">
                     </div>
                     <div class="input-field">
-                        <input class="btn blue" type="submit" value="Enregistrer">
+                        <input class="btn soupe" type="submit" value="Enregistrer">
                     </div>
                 </div>
             </form>
@@ -95,7 +79,7 @@
 
     </div>
     <div class="row">
-        <div class="col m3 s12">
+        <div class="col m6 s12">
             <ul class="collapsible">
                 <li>
                     <div class="collapsible-header"><i class="material-icons">info_outline</i>Informations / Horaires</div>
@@ -106,7 +90,7 @@
                 </li>
             </ul>
         </div>
-        <div class="col m3 s12">
+        <div class="col m6 s12">
             <ul class="collapsible">
                 <li>
                     <div class="collapsible-header"><i class="material-icons">person_pin</i>Responsable du jour</div>
@@ -120,7 +104,7 @@
                 </li>
             </ul>
         </div>
-        <div class="col m6 s12">
+        <div class="col s12">
             <ul class="collapsible">
                 <li>
                     <div class="collapsible-header"><i class="material-icons">person_pin</i>Liste des responsables</div>
@@ -247,113 +231,13 @@
         </div>
     </div>
     <div class="col s12 m8 offset-m4">
-        <p>En cas de problème, veuillez contacter l'administrateur du site : <b>thibaut.de-gouberville@2018.icam.fr</b></p>
+        <p>En cas de problème pour les inscriptions, veuillez contacter l'administrateur du site web : <b>thibaut.de-gouberville@2018.icam.fr</b></p>
     </div>
     <div style="display: none" id="type">main</div>
-    {% if is_granted('ROLE_ADMIN') %}
-
-        <div class="row">
-            <hr>
-            <h3>Partie Admin</h3>
-            <p>Cette partie est uniquement visible par les administrateurs</p>
-            <p>Vous pouvez cliquer sur les inscriptions du jour afin d'avoir plus d'informations sur les bénévoles (nom, email, numéro de téléphone, ...)</p>
-            <form action="/update-responsable/monday" class="col s12 m3 formDay" method="post">
-                <h6><b>Lundi</b></h6>
-                <label for="responsableName" class="sr-only blue-text">Nom</label>
-                <input id="responsableName" name="name" class="border-bottom-blue" type="text"
-                       placeholder="Nom du responsable" {% if responsables['monday'] is defined %}value="{{ responsables['monday'].name }}"{% endif %}>
-                <label for="responsableEmail" class="sr-only blue-text">Email</label>
-                <input id="responsableEmail" name="email" class="border-bottom-blue" type="email"
-                       placeholder="Adresse E-Mail" {% if responsables['monday'] is defined %}value="{{ responsables['monday'].email }}"{% endif %}>
-                <label for="responsablePhone" class="sr-only blue-text">Téléphone</label>
-                <input id="responsablePhone" name="phone" class="border-bottom-blue" type="tel"
-                       placeholder="Téléphone" {% if responsables['monday'] is defined %}value="{{ responsables['monday'].phone }}"{% endif %}>
-                <input class="border-bottom-blue btn blue" type="submit" value="Enregistrer">
-            </form>
-            <form action="/update-responsable/tuesday" class="col s12 m3 formDay" method="post">
-                <h6><b>Mardi</b></h6>
-                <label for="responsableName" class="sr-only blue-text">Nom</label>
-                <input id="responsableName" name="name" class="border-bottom-blue" type="text"
-                       placeholder="Nom du responsable" {% if responsables['tuesday'] is defined %}value="{{ responsables['tuesday'].name }}"{% endif %}>
-                <label for="responsableEmail" class="sr-only blue-text">Email</label>
-                <input id="responsableEmail" name="email" class="border-bottom-blue" type="email"
-                       placeholder="Adresse E-Mail" {% if responsables['tuesday'] is defined %}value="{{ responsables['tuesday'].email }}"{% endif %}>
-                <label for="responsablePhone" class="sr-only blue-text">Téléphone</label>
-                <input id="responsablePhone" name="phone" class="border-bottom-blue" type="tel"
-                       placeholder="Téléphone" {% if responsables['tuesday'] is defined %}value="{{ responsables['tuesday'].phone }}"{% endif %}>
-                <input class="border-bottom-blue btn blue" type="submit" value="Enregistrer">
-            </form>
-            <form action="/update-responsable/wednesday" class="col s12 m3 formDay" method="post">
-                <h6><b>Mercredi</b></h6>
-                <label for="responsableName" class="sr-only blue-text">Nom</label>
-                <input id="responsableName" name="name" class="border-bottom-blue" type="text"
-                       placeholder="Nom du responsable" {% if responsables['wednesday'] is defined %}value="{{ responsables['wednesday'].name }}"{% endif %}>
-                <label for="responsableEmail" class="sr-only blue-text">Email</label>
-                <input id="responsableEmail" name="email" class="border-bottom-blue" type="email"
-                       placeholder="Adresse E-Mail" {% if responsables['wednesday'] is defined %}value="{{ responsables['wednesday'].email }}"{% endif %}>
-                <label for="responsablePhone" class="sr-only blue-text">Téléphone</label>
-                <input id="responsablePhone" name="phone" class="border-bottom-blue" type="tel"
-                       placeholder="Téléphone" {% if responsables['wednesday'] is defined %}value="{{ responsables['wednesday'].phone }}"{% endif %}>
-                <input class="border-bottom-blue btn blue" type="submit" value="Enregistrer">
-            </form>
-            <form action="/update-responsable/thursday" class="col s12 m3 formDay" method="post">
-                <h6><b>Jeudi</b></h6>
-                <label for="responsableName" class="sr-only blue-text">Nom</label>
-                <input id="responsableName" name="name" class="border-bottom-blue" type="text"
-                       placeholder="Nom du responsable" {% if responsables['thursday'] is defined %}value="{{ responsables['thursday'].name }}"{% endif %}>
-                <label for="responsableEmail" class="sr-only blue-text">Email</label>
-                <input id="responsableEmail" name="email" class="border-bottom-blue" type="email"
-                       placeholder="Adresse E-Mail" {% if responsables['thursday'] is defined %}value="{{ responsables['thursday'].email }}"{% endif %}>
-                <label for="responsablePhone" class="sr-only blue-text">Téléphone</label>
-                <input id="responsablePhone" name="phone" class="border-bottom-blue" type="tel"
-                       placeholder="Téléphone" {% if responsables['thursday'] is defined %}value="{{ responsables['thursday'].phone }}"{% endif %}>
-                <input class="border-bottom-blue btn blue" type="submit" value="Enregistrer">
-            </form>
-            <form action="/update-responsable/friday" class="col s12 m3 formDay" method="post">
-                <h6><b>Vendredi</b></h6>
-                <label for="responsableName" class="sr-only blue-text">Nom</label>
-                <input id="responsableName" name="name" class="border-bottom-blue" type="text"
-                       placeholder="Nom du responsable" {% if responsables['friday'] is defined %}value="{{ responsables['friday'].name }}"{% endif %}>
-                <label for="responsableEmail" class="sr-only blue-text">Email</label>
-                <input id="responsableEmail" name="email" class="border-bottom-blue" type="email"
-                       placeholder="Adresse E-Mail" {% if responsables['friday'] is defined %}value="{{ responsables['friday'].email }}"{% endif %}>
-                <label for="responsablePhone" class="sr-only blue-text">Téléphone</label>
-                <input id="responsablePhone" name="phone" class="border-bottom-blue" type="tel"
-                       placeholder="Téléphone" {% if responsables['friday'] is defined %}value="{{ responsables['friday'].phone }}"{% endif %}>
-                <input class="border-bottom-blue btn blue" type="submit" value="Enregistrer">
-            </form>
-            <form action="/update-responsable/saturday" class="col s12 m3 formDay" method="post">
-                <h6><b>Samedi</b></h6>
-                <label for="responsableName" class="sr-only blue-text">Nom</label>
-                <input id="responsableName" name="name" class="border-bottom-blue" type="text"
-                       placeholder="Nom du responsable" {% if responsables['saturday'] is defined %}value="{{ responsables['saturday'].name }}"{% endif %}>
-                <label for="responsableEmail" class="sr-only blue-text">Email</label>
-                <input id="responsableEmail" name="email" class="border-bottom-blue" type="email"
-                       placeholder="Adresse E-Mail" {% if responsables['saturday'] is defined %}value="{{ responsables['saturday'].email }}"{% endif %}>
-                <label for="responsablePhone" class="sr-only blue-text">Téléphone</label>
-                <input id="responsablePhone" name="phone" class="border-bottom-blue" type="tel"
-                       placeholder="Téléphone" {% if responsables['saturday'] is defined %}value="{{ responsables['saturday'].phone }}"{% endif %}>
-                <input class="border-bottom-blue btn blue" type="submit" value="Enregistrer">
-            </form>
-            <form action="/update-responsable/sunday" class="col s12 m3 formDay" method="post">
-                <h6><b>Dimanche</b></h6>
-                <label for="responsableName" class="sr-only blue-text">Nom</label>
-                <input id="responsableName" name="name" class="border-bottom-blue" type="text"
-                       placeholder="Nom du responsable" {% if responsables['sunday'] is defined %}value="{{ responsables['sunday'].name }}"{% endif %}>
-                <label for="responsableEmail" class="sr-only blue-text">Email</label>
-                <input id="responsableEmail" name="email" class="border-bottom-blue" type="email"
-                       placeholder="Adresse E-Mail" {% if responsables['sunday'] is defined %}value="{{ responsables['sunday'].email }}"{% endif %}>
-                <label for="responsablePhone" class="sr-only blue-text">Téléphone</label>
-                <input id="responsablePhone" name="phone" class="border-bottom-blue" type="tel"
-                       placeholder="Téléphone" {% if responsables['sunday'] is defined %}value="{{ responsables['sunday'].phone }}"{% endif %}>
-                <input class="border-bottom-blue btn blue" type="submit" value="Enregistrer">
-            </form>
-        </div>
-    {% endif %}
 </div>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('js/datepicker2.js') }}"></script>
+    <script src="{{ asset('js/datepicker2.js') }}?17042022"></script>
 {% endblock %}

@@ -1,0 +1,110 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="right-align">
+        <a href="{{ path('home') }}" class="btn blue">Retour</a>
+        <a href="{{ path('app_logout') }}" class="btn red">Déconnexion</a>
+    </div>
+
+    <div class="row">
+        <h1>Administration</h1>
+        <p>Pour information, sur la page principale, vous pouvez cliquer sur les inscriptions du jour afin d'avoir plus d'informations sur les bénévoles (nom, email, numéro de téléphone, ...)</p>
+        <form action="/update-responsable/monday" class="col s12 m3 formDay" method="post">
+            <h6><b>Lundi</b></h6>
+            <label for="responsableName" class="sr-only blue-text">Nom</label>
+            <input id="responsableName" name="name" class="border-bottom-blue" type="text"
+                   placeholder="Nom du responsable" {% if responsables['monday'] is defined %}value="{{ responsables['monday'].name }}"{% endif %}>
+            <label for="responsableEmail" class="sr-only blue-text">Email</label>
+            <input id="responsableEmail" name="email" class="border-bottom-blue" type="email"
+                   placeholder="Adresse E-Mail" {% if responsables['monday'] is defined %}value="{{ responsables['monday'].email }}"{% endif %}>
+            <label for="responsablePhone" class="sr-only blue-text">Téléphone</label>
+            <input id="responsablePhone" name="phone" class="border-bottom-blue" type="tel"
+                   placeholder="Téléphone" {% if responsables['monday'] is defined %}value="{{ responsables['monday'].phone }}"{% endif %}>
+            <input class="border-bottom-blue btn blue" type="submit" value="Enregistrer">
+        </form>
+        <form action="/update-responsable/tuesday" class="col s12 m3 formDay" method="post">
+            <h6><b>Mardi</b></h6>
+            <label for="responsableName" class="sr-only blue-text">Nom</label>
+            <input id="responsableName" name="name" class="border-bottom-blue" type="text"
+                   placeholder="Nom du responsable" {% if responsables['tuesday'] is defined %}value="{{ responsables['tuesday'].name }}"{% endif %}>
+            <label for="responsableEmail" class="sr-only blue-text">Email</label>
+            <input id="responsableEmail" name="email" class="border-bottom-blue" type="email"
+                   placeholder="Adresse E-Mail" {% if responsables['tuesday'] is defined %}value="{{ responsables['tuesday'].email }}"{% endif %}>
+            <label for="responsablePhone" class="sr-only blue-text">Téléphone</label>
+            <input id="responsablePhone" name="phone" class="border-bottom-blue" type="tel"
+                   placeholder="Téléphone" {% if responsables['tuesday'] is defined %}value="{{ responsables['tuesday'].phone }}"{% endif %}>
+            <input class="border-bottom-blue btn blue" type="submit" value="Enregistrer">
+        </form>
+        <form action="/update-responsable/wednesday" class="col s12 m3 formDay" method="post">
+            <h6><b>Mercredi</b></h6>
+            <label for="responsableName" class="sr-only blue-text">Nom</label>
+            <input id="responsableName" name="name" class="border-bottom-blue" type="text"
+                   placeholder="Nom du responsable" {% if responsables['wednesday'] is defined %}value="{{ responsables['wednesday'].name }}"{% endif %}>
+            <label for="responsableEmail" class="sr-only blue-text">Email</label>
+            <input id="responsableEmail" name="email" class="border-bottom-blue" type="email"
+                   placeholder="Adresse E-Mail" {% if responsables['wednesday'] is defined %}value="{{ responsables['wednesday'].email }}"{% endif %}>
+            <label for="responsablePhone" class="sr-only blue-text">Téléphone</label>
+            <input id="responsablePhone" name="phone" class="border-bottom-blue" type="tel"
+                   placeholder="Téléphone" {% if responsables['wednesday'] is defined %}value="{{ responsables['wednesday'].phone }}"{% endif %}>
+            <input class="border-bottom-blue btn blue" type="submit" value="Enregistrer">
+        </form>
+        <form action="/update-responsable/thursday" class="col s12 m3 formDay" method="post">
+            <h6><b>Jeudi</b></h6>
+            <label for="responsableName" class="sr-only blue-text">Nom</label>
+            <input id="responsableName" name="name" class="border-bottom-blue" type="text"
+                   placeholder="Nom du responsable" {% if responsables['thursday'] is defined %}value="{{ responsables['thursday'].name }}"{% endif %}>
+            <label for="responsableEmail" class="sr-only blue-text">Email</label>
+            <input id="responsableEmail" name="email" class="border-bottom-blue" type="email"
+                   placeholder="Adresse E-Mail" {% if responsables['thursday'] is defined %}value="{{ responsables['thursday'].email }}"{% endif %}>
+            <label for="responsablePhone" class="sr-only blue-text">Téléphone</label>
+            <input id="responsablePhone" name="phone" class="border-bottom-blue" type="tel"
+                   placeholder="Téléphone" {% if responsables['thursday'] is defined %}value="{{ responsables['thursday'].phone }}"{% endif %}>
+            <input class="border-bottom-blue btn blue" type="submit" value="Enregistrer">
+        </form>
+        <form action="/update-responsable/friday" class="col s12 m3 formDay" method="post">
+            <h6><b>Vendredi</b></h6>
+            <label for="responsableName" class="sr-only blue-text">Nom</label>
+            <input id="responsableName" name="name" class="border-bottom-blue" type="text"
+                   placeholder="Nom du responsable" {% if responsables['friday'] is defined %}value="{{ responsables['friday'].name }}"{% endif %}>
+            <label for="responsableEmail" class="sr-only blue-text">Email</label>
+            <input id="responsableEmail" name="email" class="border-bottom-blue" type="email"
+                   placeholder="Adresse E-Mail" {% if responsables['friday'] is defined %}value="{{ responsables['friday'].email }}"{% endif %}>
+            <label for="responsablePhone" class="sr-only blue-text">Téléphone</label>
+            <input id="responsablePhone" name="phone" class="border-bottom-blue" type="tel"
+                   placeholder="Téléphone" {% if responsables['friday'] is defined %}value="{{ responsables['friday'].phone }}"{% endif %}>
+            <input class="border-bottom-blue btn blue" type="submit" value="Enregistrer">
+        </form>
+        <form action="/update-responsable/saturday" class="col s12 m3 formDay" method="post">
+            <h6><b>Samedi</b></h6>
+            <label for="responsableName" class="sr-only blue-text">Nom</label>
+            <input id="responsableName" name="name" class="border-bottom-blue" type="text"
+                   placeholder="Nom du responsable" {% if responsables['saturday'] is defined %}value="{{ responsables['saturday'].name }}"{% endif %}>
+            <label for="responsableEmail" class="sr-only blue-text">Email</label>
+            <input id="responsableEmail" name="email" class="border-bottom-blue" type="email"
+                   placeholder="Adresse E-Mail" {% if responsables['saturday'] is defined %}value="{{ responsables['saturday'].email }}"{% endif %}>
+            <label for="responsablePhone" class="sr-only blue-text">Téléphone</label>
+            <input id="responsablePhone" name="phone" class="border-bottom-blue" type="tel"
+                   placeholder="Téléphone" {% if responsables['saturday'] is defined %}value="{{ responsables['saturday'].phone }}"{% endif %}>
+            <input class="border-bottom-blue btn blue" type="submit" value="Enregistrer">
+        </form>
+        <form action="/update-responsable/sunday" class="col s12 m3 formDay" method="post">
+            <h6><b>Dimanche</b></h6>
+            <label for="responsableName" class="sr-only blue-text">Nom</label>
+            <input id="responsableName" name="name" class="border-bottom-blue" type="text"
+                   placeholder="Nom du responsable" {% if responsables['sunday'] is defined %}value="{{ responsables['sunday'].name }}"{% endif %}>
+            <label for="responsableEmail" class="sr-only blue-text">Email</label>
+            <input id="responsableEmail" name="email" class="border-bottom-blue" type="email"
+                   placeholder="Adresse E-Mail" {% if responsables['sunday'] is defined %}value="{{ responsables['sunday'].email }}"{% endif %}>
+            <label for="responsablePhone" class="sr-only blue-text">Téléphone</label>
+            <input id="responsablePhone" name="phone" class="border-bottom-blue" type="tel"
+                   placeholder="Téléphone" {% if responsables['sunday'] is defined %}value="{{ responsables['sunday'].phone }}"{% endif %}>
+            <input class="border-bottom-blue btn blue" type="submit" value="Enregistrer">
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}

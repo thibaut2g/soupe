@@ -1,0 +1,77 @@
+body {
+    background: white;
+}
+
+h1 {
+    color: #f44f26;
+    font-size: 32pt;
+}
+
+.border-bottom-blue {
+    border-bottom-color: #2196F3 !important;
+}
+
+input[type=text]:not(.browser-default):focus:not([readonly]),
+input[type=tel]:not(.browser-default):focus:not([readonly]),
+input[type=email]:not(.browser-default):focus:not([readonly]) {
+    border-bottom: 1px solid #f44f26!important;
+    box-shadow: 0 1px 0 0 #f44f26;
+}
+
+input[type=text]:not(.browser-default),
+input[type=tel]:not(.browser-default),
+input[type=email]:not(.browser-default)
+{
+    border-bottom-color: #f44f26!important;
+}
+
+input[type=text]:not(.browser-default):focus:not([readonly])+label,
+input[type=tel]:not(.browser-default):focus:not([readonly])+label,
+input[type=email]:not(.browser-default):focus:not([readonly])+label
+{
+    color: #f44f26!important;
+}
+
+.soupe-text {
+    color: #f44f26;
+}
+
+.soupe {
+    background-color: #f44f26 !important;
+}
+
+.formDay {
+    padding: 10px;
+    border: 1px solid black;
+    margin: 2px;
+}
+
+.subscribe, .unsubscribe {
+    cursor: pointer;
+}
+.subscribe:hover {
+    color: #00af00 !important;
+}
+.unsubscribe:hover {
+    color: #d10000 !important;
+}
+
+.datepicker-date-display {
+    background-color: #f44f26 !important;
+}
+
+.datepicker-cancel {
+    color: #f44f26!important;
+}
+
+.datepicker-done {
+    color: #f44f26!important;
+}
+
+.datepicker-table td.is-today {
+    color: #f44f26!important;
+}
+
+.datepicker-table td.is-selected {
+    background-color: #f44f26 !important;
+}

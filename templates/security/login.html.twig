@@ -3,45 +3,34 @@
 {% block title %}Service de la soupe du Sacré Choeur{% endblock %}
 
 {% block body %}
-    <style>
-        body {
-            background: #eeeeee;
-        }
-        .border-bottom-blue {
-            border-bottom-color: #2196F3 !important;
-        }
-    </style>
     <div class="container">
-        <h2>Service de la soupe du Sacré Coeur</h2>
+        <h1>Service de la soupe du Sacré Coeur</h1>
 
         <div class="row">
-            <div class="col m6 s12">
-                <form method="post">
+            <form method="post">
+                <div class="col s12">
                     {% if error %}
                         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}. Veuillez réessayer.</div>
                     {% endif %}
-                    <p class="flow-text">Ne remplissez que l'adresse email si vous avez déjà rempli ce formulaire une fois.</p>
-                    <label for="firstname" class="sr-only blue-text">Prénom</label>
-                    <input type="text" name="firstname" id="firstname" class="form-control border-bottom-blue blue-text" placeholder="Prénom" autofocus>
-                    <label for="name" class="sr-only blue-text">Nom</label>
-                    <input type="text" name="lastname" id="name" class="form-control border-bottom-blue blue-text" placeholder="Nom">
-                    <label for="phone" class="sr-only blue-text">Téléphone</label>
-                    <input type="tel" name="phone" id="phone" class="form-control border-bottom-blue blue-text" placeholder="Téléphone">
-                    <label for="inputEmail" class="sr-only blue-text">Email</label>
-                    <input type="email" name="email" id="inputEmail" class="form-control border-bottom-blue blue-text" placeholder="Email" required>
+                    <p class="flow-text">Ne remplissez que l'adresse email si vous vous êtes inscrit au moins une fois.</p>
+                </div>
+                <div class="col m6 offset-m3 s12">
+                    <label for="firstname" class="sr-only soupe-text">Prénom</label>
+                    <input type="text" name="firstname" id="firstname" class="form-control soupe-text" placeholder="Prénom" autofocus>
+                    <label for="name" class="sr-only soupe-text">Nom</label>
+                    <input type="text" name="lastname" id="name" class="form-control soupe-text" placeholder="Nom">
+                    <label for="phone" class="sr-only soupe-text">Téléphone</label>
+                    <input type="tel" name="phone" id="phone" class="form-control soupe-text" placeholder="Téléphone">
+                    <label for="inputEmail" class="sr-only soupe-text">Email</label>
+                    <input type="email" name="email" id="inputEmail" class="form-control soupe-text" placeholder="Email" required>
 
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-
-                    <button class="btn btn-lg btn-primary blue" type="submit">
+                    <button class="btn btn-lg btn-primary soupe" type="submit">
                         Choisir une date
                     </button>
-                </form>
-            </div>
-            <div class="col s12 m6">
-                <p class="flow-text"></p>
-
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 {% endblock %}

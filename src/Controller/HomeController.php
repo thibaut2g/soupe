@@ -112,6 +112,22 @@ class HomeController extends AbstractController
         $phone = $request->request->get('phone');
 
         $responsableService->saveResponsable($day, $name, $email, $phone);
-        return $this->redirectToRoute('home');
+        return $this->redirectToRoute('admin');
+    }
+
+
+    /**
+     * @IsGranted("ROLE_ADMIN")
+     * @Route("/admin", name="admin")
+     * @param ResponsableService $responsableService
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function admin(ResponsableService $responsableService)
+    {
+        $responsables = $responsableService->getResponsables();
+
+        return $this->render('admin.html.twig', [
+            "responsables" => $responsables
+        ]);
     }
 }

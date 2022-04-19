@@ -6,7 +6,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "doctrine/doctrine-bundle": "^1.11",
-        "doctrine/doctrine-migrations-bundle": "^2.2.x-dev",
+        "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.7",
         "sensio/framework-extra-bundle": "^5.3",
         "symfony/apache-pack": "^1.0",
@@ -27,7 +27,10 @@
         "preferred-install": {
             "*": "dist"
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "symfony/flex": true
+        }
     },
     "autoload": {
         "psr-4": {
@@ -71,7 +74,7 @@
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.1",
         "fzaninotto/faker": "^1.8",
-        "symfony/maker-bundle": "^1.11",
+        "symfony/maker-bundle": "1.33.*",
         "symfony/stopwatch": "4.2.*",
         "symfony/web-profiler-bundle": "4.2.*",
         "symfony/web-server-bundle": "4.2.*"

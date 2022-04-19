@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\ActiveDate;
+use App\Entity\Config;
 use App\Entity\Subscription;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -40,11 +41,19 @@ class CalendarService
     ];
 
     private $twig;
+    /** @var Config $config */
+    private $config;
 
     public function __construct(EntityManagerInterface $entityManager, Environment $twig)
     {
         $this->em = $entityManager;
         $this->twig = $twig;
+        $configs =$this->em->getRepository(Config::class)->findAll();
+        if (empty($configs)) {
+            $this->config = new Config();
+        } else {
+            $this->config = array_pop($configs);
+        }
     }
 
     /**
@@ -65,7 +74,7 @@ class CalendarService
 
         $subscriptions = $this->em->getRepository(Subscription::class)
             ->findBy(['date' => $date, "type" => $type, "isRemoved" => NULL]);
-        if (count($subscriptions) >= self::MAX_PARTICIPANT || $this->isASunday($date))
+        if (count($subscriptions) >= $this->getMaxParticipantNumber() || $this->isASunday($date))
             return false;
 
 /**        foreach($subscriptions as $subscription) {
@@ -106,7 +115,7 @@ class CalendarService
 
         $tbody = '';
 
-        for ($rowNumber = self::ROW_MIN_PARTICIPANT; $rowNumber <= (self::MAX_PARTICIPANT + 1); $rowNumber++) {
+        for ($rowNumber = self::ROW_MIN_PARTICIPANT; $rowNumber <= ($this->getMaxParticipantNumber() + 1); $rowNumber++) {
 
             $tr = '';
             $lineCount = 0;
@@ -125,7 +134,7 @@ class CalendarService
                 $tr .= "</td>";
             }
 
-            if ($lineCount == 0 OR $rowNumber == (self::MAX_PARTICIPANT + 1)) {
+            if ($lineCount == 0 OR $rowNumber == ($this->getMaxParticipantNumber() + 1)) {
                 $tbody .= $this->getSubscribeButtons($calendar, $userId, $type);
                 break;
             }
@@ -194,11 +203,12 @@ class CalendarService
         $subscriptions = $this->em->getRepository(Subscription::class)
             ->findBy(['date' => $askedDate, "userId" => $userId, "type" => $type, "isRemoved" => NULL]);
 
-        if (!empty($subscriptions))
-            return "<i class='material-icons subscribe blue-text' data-date='".$date."'>control_point</i>
-                    <i class='material-icons unsubscribe red-text' data-date='".$date."'>highlight_off</i>";
+        return $this->twig->render('helper/subscribeButton.html.twig', [
+            'subscriptions' => $subscriptions,
+            'date' => $date,
+            'isMaxNumber' => $this->getMaxParticipantNumber() <= count($subscriptions),
+        ]);
 
-        return "<i class='material-icons subscribe blue-text' data-date='".$date."'>control_point</i>";
     }
 
 
@@ -209,7 +219,7 @@ class CalendarService
         foreach (self::WEEK_DAYS as $day) {
             $subscribeButtons .= "<td>";
             $date = $calendar[$day][0];
-            if ($this->isActive($date)) {
+            if ($this->isActive($date) && $this->config->getIsSubscriptionOpen() !== false) {
                 $subscribeButtons .= $this->getSubscribeButton($date, $userId, $type);
             } else {
                 $subscribeButtons .= $this->getCloseButton();
@@ -250,7 +260,7 @@ class CalendarService
         $selfUser = $this->em->getRepository(User::class)
             ->findOneBy(['id' => $SelfUserId]);
 
-        return $this->twig->render('helper/subscribeButton.html.twig', [
+        return $this->twig->render('helper/subscribeButtons.html.twig', [
             'isCurrentUser' => ($SelfUserId == $userId),
             'isAdmin' => in_array('ROLE_ADMIN', $selfUser->getRoles()),
             "user" => $user
@@ -281,5 +291,14 @@ class CalendarService
     private function isASunday($date)
     {
         return $date->format('D') == 'Sun';
+    }
+
+    public function getMaxParticipantNumber()
+    {
+        if (!empty($this->config->getMaxParticipantNumber())) {
+            return $this->config->getMaxParticipantNumber();
+        }
+
+        return self::MAX_PARTICIPANT;
     }
 }

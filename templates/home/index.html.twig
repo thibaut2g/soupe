@@ -23,9 +23,12 @@
     </div>
     <h1 class="center">Inscription à la soupe du Sacré Coeur</h1>
 
-    <div class="row center red-text" style="margin: 20px; border: 2px solid red">
-        <p class="flow-text">Le service de la soupe se termine cette année le 23 avril.</p>
-    </div>
+    {% if infoMessage is not empty %}
+        <div class="row center {{ messageColor }}-text" style="margin: 20px; border: 2px solid {{ messageColor }}">
+            <p class="flow-text">{{ infoMessage }}</p>
+        </div>
+    {% endif %}
+
     <div class="row">
         <div class="col m3 s12">
             <form id="datepicker_form">
@@ -69,11 +72,11 @@
             </table>
         </div>
         <div class="col s12 m8 offset-m4">
-            <p class="flow-text red-text text-darken-2">Maximum 5 inscrits par jour.</p>
+            <p class="flow-text red-text text-darken-2">Maximum {{ maxParticipantNumber }} bénévoles par jour.</p>
         </div>
-        {% if (isAdmin) %}
+        {% if isAdmin %}
             <div class="col s12 m8 offset-m4 center">
-                <p class="flow-text red-text text-darken-1">Vous ne pouvez pas vous inscrire avec le compte administrateur. Pour cela merci de vous déconnecter et de vous reconnecter avec votre adresse email.</p>
+                <p class="flow-text red-text text-darken-1" style="margin-top: 0">Vous ne pouvez pas vous inscrire avec le compte administrateur. Pour cela merci de vous déconnecter et de vous reconnecter avec votre adresse email.</p>
             </div>
         {% endif %}
 

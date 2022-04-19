@@ -2,11 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Config;
 use App\Service\CalendarService;
 use App\Service\ResponsableService;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -28,6 +29,20 @@ class HomeController extends AbstractController
         'November' => 'Novembre',
         'December' => 'Décembre'
     ];
+
+    /** @var Config $config */
+    private $config;
+
+
+    public function __construct(EntityManagerInterface $em)
+    {
+        $configs = $em->getRepository(Config::class)->findAll();
+        if (empty($configs)) {
+            $this->config = new Config();
+        } else {
+            $this->config = array_pop($configs);
+        }
+    }
 
     /**
      * @Route("/")
@@ -63,7 +78,10 @@ class HomeController extends AbstractController
             'nextMonday' => $nextMonday,
             'lastMonday' => $lastMonday,
             'responsables' => $responsables,
-            'isAdmin' => $isAdmin
+            'isAdmin' => $isAdmin,
+            'maxParticipantNumber' => $calendarService->getMaxParticipantNumber(),
+            'infoMessage' => $this->config->getMessageContent(),
+            'messageColor' => $this->config->getMessageColor(),
         ]);
     }
 
@@ -94,40 +112,11 @@ class HomeController extends AbstractController
             'nextMonday' => $nextMonday,
             'lastMonday' => $lastMonday,
             'responsables' => $responsables,
-            'isAdmin' => $isAdmin
+            'isAdmin' => $isAdmin,
+            'maxParticipantNumber' => $calendarService->getMaxParticipantNumber(),
+            'infoMessage' => $this->config->getMessageContent(),
+            'messageColor' => $this->config->getMessageColor(),
         ]);
     }
 
-    /**
-     * @Route("/update-responsable/{day}", name="dayForm", methods={"post"})
-     * @param Request $request
-     * @param ResponsableService $responsableService
-     * @param $day
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function dayForm(Request $request, ResponsableService $responsableService, $day)
-    {
-        $name = $request->request->get('name');
-        $email = $request->request->get('email');
-        $phone = $request->request->get('phone');
-
-        $responsableService->saveResponsable($day, $name, $email, $phone);
-        return $this->redirectToRoute('admin');
-    }
-
-
-    /**
-     * @IsGranted("ROLE_ADMIN")
-     * @Route("/admin", name="admin")
-     * @param ResponsableService $responsableService
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function admin(ResponsableService $responsableService)
-    {
-        $responsables = $responsableService->getResponsables();
-
-        return $this->render('admin.html.twig', [
-            "responsables" => $responsables
-        ]);
-    }
 }

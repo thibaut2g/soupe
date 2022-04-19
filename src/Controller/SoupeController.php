@@ -76,9 +76,65 @@ class SoupeController extends AbstractController
         $nextMonday = $calendarService->getNextMonday($monday);
         $lastMonday = $calendarService->getLastMonday($monday);
 
-        $isAdmin = ($userId == 42);
+        $isAdmin = $this->isGranted("ROLE_ADMIN");
 
         return $this->render('soupe/index.html.twig', [
+            'weekDays' => $weekDays,
+            'weekNumber' => date('W', strtotime($monday)),
+            'month' => self::$months[date('F', strtotime($monday))],
+            'tbody' => $tbody,
+            'nextMonday' => $nextMonday,
+            'lastMonday' => $lastMonday,
+            'isAdmin' => $isAdmin
+        ]);
+
+    }
+
+    /**
+     * @Route("/dessert", name="dessert")
+     * @param CalendarService $calendarService
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function dessert(CalendarService $calendarService)
+    {
+        $userId = $this->getUser()->getId();
+
+        $isAdmin = $this->isGranted("ROLE_ADMIN");
+
+        $tbody = $calendarService->getTbody($userId, false, "dessert");
+        $weekDays = $calendarService->getWeekDays();
+        $nextMonday = $calendarService->getNextMonday();
+        $lastMonday = $calendarService->getLastMonday();
+
+        return $this->render('dessert/index.html.twig', [
+            'weekDays' => $weekDays,
+            'weekNumber' => date('W'),
+            'month' => self::$months[date('F')],
+            'tbody' => $tbody,
+            'nextMonday' => $nextMonday,
+            'lastMonday' => $lastMonday,
+            'isAdmin' => $isAdmin
+        ]);
+    }
+
+    /**
+     * @Route("/dessert/{monday}", name="monday_dessert")
+     * @param CalendarService $calendarService
+     * @param $monday
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function mondayDessert(CalendarService $calendarService, $monday)
+    {
+        $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
+
+        $tbody = $calendarService->getTbody($userId, $monday, "dessert");
+        $weekDays = $calendarService->getWeekDays($monday);
+        $nextMonday = $calendarService->getNextMonday($monday);
+        $lastMonday = $calendarService->getLastMonday($monday);
+
+        $isAdmin = $this->isGranted("ROLE_ADMIN");
+
+        return $this->render('dessert/index.html.twig', [
             'weekDays' => $weekDays,
             'weekNumber' => date('W', strtotime($monday)),
             'month' => self::$months[date('F', strtotime($monday))],

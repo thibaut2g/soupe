@@ -14,7 +14,14 @@ use Symfony\Component\Mime\Email;
 
 class RelanceMailService
 {
-    public function relanceMail(MailerInterface $mailer) {
+    private $mailer;
+
+    public function __construct(MailerInterface $mailer)
+    {
+        $this->mailer = $mailer;
+    }
+
+    public function relanceMail() {
 
         $email = (new Email())
             ->from('noreply.soupesacrecoeur@gmail.com')
@@ -22,7 +29,7 @@ class RelanceMailService
             ->subject('Test Soupe !')
             ->htmlTemplate('emails/relance.html.twig');
 
-        $mailer->send($email);
+        $this->mailer->send($email);
 
     }
 }

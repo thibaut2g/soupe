@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Config;
 use App\Service\CalendarService;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -15,6 +17,20 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CalendarController extends AbstractController
 {
+
+    private $isOpenSubscription;
+
+    public function __construct(EntityManagerInterface $em)
+    {
+        $configs =$em->getRepository(Config::class)->findAll();
+        if (empty($configs)) {
+            $config = new Config();
+        } else {
+            $config = array_pop($configs);
+        }
+
+        $this->isOpenSubscription = $config->getIsSubscriptionOpen();
+    }
 
     /**
      * @Route("/saveDate/{type}/{date}", name="saveDate")
@@ -30,6 +46,10 @@ class CalendarController extends AbstractController
         // interdiction de s'inscrire avec le compte administrateur
         if ($this->isGranted("ROLE_ADMIN")) {
             return new Response("compte admin");
+        }
+
+        if (!$this->isOpenSubscription) {
+            return new Response("inscription fermée");
         }
 
         try {

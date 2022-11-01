@@ -11,6 +11,7 @@ namespace App\Service;
 
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 
 class RelanceMailService
 {
@@ -24,9 +25,9 @@ class RelanceMailService
     public function relanceMail() {
 
         $email = (new TemplatedEmail())
-            ->from('noreply.soupesacrecoeur@gmail.com')
+            ->from(Address::create('Ne pas répondre - Soupe <noreply.soupesacrecoeur@gmail.com>'))
             ->to('thibaut.de-gouberville@2018.icam.fr')
-            ->subject('Test Soupe !')
+            ->subject('Rappel : Soupe du Sacré Coeur demain')
             ->htmlTemplate('emails/relance.html.twig');
 
         $this->mailer->send($email);

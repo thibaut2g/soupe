@@ -29,7 +29,7 @@ class RelanceMailService
 
     public function relanceMail() {
 
-        $date = new \DateTime();
+        $date = new \DateTime(date('d-m-Y'));
         $date->modify('+1 day');
         $subscriptions = $this->em->getRepository(Subscription::class)->findBy(["date" => $date, "isRemoved" => NULL]);
 

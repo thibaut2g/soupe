@@ -31,9 +31,7 @@ class RelanceMailService
 
         $date = new \DateTime(date('d-m-Y'));
         $date->modify('+1 day');
-        $subscriptions = $this->em->getRepository(Subscription::class)->findBy(["date" => $date, "isRemoved" => NULL]);
-
-        var_dump($subscriptions);die;
+        $subscriptions = $this->em->getRepository(Subscription::class)->findBy(["date" => $date, "type" => "main", "isRemoved" => NULL]);
 
         /** @var Subscription $subscription */
         /** @var User $user */

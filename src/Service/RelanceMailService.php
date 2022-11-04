@@ -40,8 +40,8 @@ class RelanceMailService
 
             $email = (new TemplatedEmail())
                 ->from(Address::create('Ne pas répondre - Soupe <noreply.soupesacrecoeur@gmail.com>'))
-                ->to('thibaut.de-gouberville@2018.icam.fr')
-                ->subject('Rappel : Soupe du Sacré Coeur demain' . $user->getEmail())
+                ->to($user->getEmail())
+                ->subject('Rappel : Soupe du Sacré Coeur demain')
                 ->htmlTemplate('emails/relance.html.twig');
 
             $this->mailer->send($email);

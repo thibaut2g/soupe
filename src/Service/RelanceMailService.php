@@ -33,6 +33,8 @@ class RelanceMailService
         $date->modify('+1 day');
         $subscriptions = $this->em->getRepository(Subscription::class)->findBy(["date" => $date, "isRemoved" => NULL]);
 
+        var_dump($subscriptions);die;
+
         /** @var Subscription $subscription */
         /** @var User $user */
         foreach ($subscriptions as $subscription) {

@@ -98,7 +98,7 @@ for (let user of userInfos) {
                 if(httpRequest.responseText === "ok") {
                     alert("Inscription validée");
                 } else {
-                    alert("Nombre maximum de participants atteint ou veuillez contacter l'administrateur du site.");
+                    alert("Impossible de s'inscrire pour cette date, veuillez contacter le responsable du jour pour plus d'informations");
                 }
             }
         }
@@ -138,7 +138,7 @@ for (let user of userInfos) {
                 if(httpRequest.responseText === "ok") {
                     location.reload();
                 } else {
-                    alert("Nombre maximum de participants atteint ou veuillez contacter l'administrateur du site. thibaut.de-gouberville@2018.icam.fr.");
+                    alert("Impossible de s'inscrire pour cette date, veuillez contacter le responsable du jour pour plus d'informations.");
                 }
             }
         }

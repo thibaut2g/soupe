@@ -74,7 +74,7 @@ class CalendarService
 
         $subscriptions = $this->em->getRepository(Subscription::class)
             ->findBy(['date' => $date, "type" => $type, "isRemoved" => NULL]);
-        if (count($subscriptions) >= $this->getMaxParticipantNumber() || $this->isASunday($date))
+        if (count($subscriptions) >= $this->getMaxParticipantNumber() || $this->isASunday($date) || $this->isGreaterThanThreeMonths($date))
             return false;
 
 /**        foreach($subscriptions as $subscription) {
@@ -300,5 +300,12 @@ class CalendarService
         }
 
         return self::MAX_PARTICIPANT;
+    }
+
+    private function isGreaterThanThreeMonths($date)
+    {
+        $ThreeMonthLater = new \DateTime();
+        $ThreeMonthLater->modify('+3 month');
+        return $date > $ThreeMonthLater;
     }
 }

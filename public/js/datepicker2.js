@@ -157,6 +157,8 @@ for (let user of userInfos) {
 
 
     function makeRequest(date) {
+        alert("Veuillez contacter le responsable du jour pour vous désinscrire.");
+        return;
         var askedDate = date.split("-");
         if (confirm("Se désinscrire de cette date : " + askedDate[2] + "/" + askedDate[1] + "/" + askedDate[0] + " ?")) {
             httpRequest = new XMLHttpRequest();

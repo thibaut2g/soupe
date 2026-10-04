@@ -72,6 +72,17 @@ class CalendarService
         }
         $date = new \DateTime($date);
 
+        $today = new \DateTime('today');
+        if ($date < $today) {
+            // La date est dans le passé
+            return false;
+        }
+        $maxDate = (clone $today)->modify('+2 months');
+        if ($date > $maxDate) {
+            // La date ne peut pas être à plus de 2 mois.;
+            return false;
+        }
+
         $subscriptions = $this->em->getRepository(Subscription::class)
             ->findBy(['date' => $date, "type" => $type, "isRemoved" => NULL]);
         if (count($subscriptions) >= $this->getMaxParticipantNumber() || $this->isASunday($date) || $this->isGreaterThanThreeMonths($date))

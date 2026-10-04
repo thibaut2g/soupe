@@ -79,7 +79,7 @@ class CalendarService
         }
         $maxDate = (clone $today)->modify('+2 months');
         if ($date > $maxDate) {
-            // La date ne peut pas être à plus de 2 mois.;
+            // La date ne peut pas être à plus de 2 mois.
             return false;
         }
 

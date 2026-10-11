@@ -98,7 +98,18 @@ for (let user of userInfos) {
                 if(httpRequest.responseText === "ok") {
                     alert("Inscription validée");
                 } else {
-                    alert("Impossible de s'inscrire pour cette date, veuillez contacter le responsable du jour pour plus d'informations");
+                    if(httpRequest.responseText === "past") {
+                        alert("Il n'est pas possible de s'inscrire à une date passée.");
+                    }
+                    if(httpRequest.responseText === "toofar") {
+                        alert("Il n'est pas possible de s'inscrire plus de 2 mois en avance.");
+                    }
+                    if(httpRequest.responseText === "icam") {
+                        alert("Il y a déjà 3 Icams inscrits pour ce jour, ce qui est la limite.");
+                    }
+                    if(httpRequest.responseText === "ko") {
+                        alert("Impossible de s'inscrire pour cette date, veuillez contacter le responsable du jour pour plus d'informations");
+                    }
                 }
             }
         }
@@ -138,7 +149,18 @@ for (let user of userInfos) {
                 if(httpRequest.responseText === "ok") {
                     location.reload();
                 } else {
-                    alert("Impossible de s'inscrire pour cette date, veuillez contacter le responsable du jour pour plus d'informations.");
+                     if(httpRequest.responseText === "past") {
+                        alert("Il n'est pas possible de s'inscrire à une date passée.");
+                    }
+                    if(httpRequest.responseText === "toofar") {
+                        alert("Il n'est pas possible de s'inscrire plus de 2 mois en avance.");
+                    }
+                    if(httpRequest.responseText === "icam") {
+                        alert("Il y a déjà 3 Icams inscrits pour ce jour, ce qui est la limite.");
+                    }
+                    if(httpRequest.responseText === "ko") {
+                        alert("Impossible de s'inscrire pour cette date, veuillez contacter le responsable du jour pour plus d'informations");
+                    }
                 }
             }
         }

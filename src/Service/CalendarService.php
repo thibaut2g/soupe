@@ -75,23 +75,23 @@ class CalendarService
         $today = new \DateTime('today');
         if ($date < $today) {
             // La date est dans le passé
-            return false;
+            return "past";
         }
         $maxDate = (clone $today)->modify('+2 months');
         if ($date > $maxDate) {
             // La date ne peut pas être à plus de 2 mois.
-            return false;
+            return "toofar";
         }
 
         $user = $this->em->getRepository(User::class)->findOneBy(['id' => $userId]);
         if (str_contains($user->getEmail(), "icam")) {
-            if(!$this->validateIcamSubscriptionCount($date, $type)) { return false;}
+            if(!$this->validateIcamSubscriptionCount($date, $type)) { return "icam";}
         }
 
         $subscriptions = $this->em->getRepository(Subscription::class)
             ->findBy(['date' => $date, "type" => $type, "isRemoved" => NULL]);
         if (count($subscriptions) >= $this->getMaxParticipantNumber() || $this->isASunday($date) || $this->isGreaterThanThreeMonths($date))
-            return false;
+            return "ko";
 
 /**        foreach($subscriptions as $subscription) {
             if ($subscription->getUserId() == $userId)
@@ -105,7 +105,7 @@ class CalendarService
         $subscription->setUserId($userId);
         $this->em->persist($subscription);
         $this->em->flush();
-        return true;
+        return "ok";
     }
 
     private function getFormattedDate($date)

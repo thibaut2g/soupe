@@ -57,12 +57,12 @@ class CalendarService
     }
 
     /**
-     * @param User $user
+     * @param $userId
      * @param $date
      * @param $type
      * @return bool
      */
-    public function saveDate(User $user, $date, $type)
+    public function saveDate($userId, $date, $type)
     {
         if (!$this->validateDate($date)) {
             $date = $this->getFormattedDate($date);
@@ -83,6 +83,7 @@ class CalendarService
             return false;
         }
 
+        $user = $this->em->getRepository(User::class)->findOneBy(['id' => $userId]);
         if (str_contains($user->getEmail(), "icam")) {
             if(!$this->validateIcamSubscriptionCount($date)) { return false;}
         }
@@ -331,7 +332,7 @@ class CalendarService
         /* @var \App\Entity\Subscription $subscription */
         foreach ($subscriptions as $subscription) {
             $user = $this->em->getRepository(User::class)
-            ->findBy(['id' => $subscription->getUserId()]);
+            ->findOneBy(['id' => $subscription->getUserId()]);
             
             if (str_contains($user->getEmail(), "icam")) {
                 $countIcam = $countIcam + 1;

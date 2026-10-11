@@ -22,7 +22,7 @@ class CalendarController extends AbstractController
 
     public function __construct(EntityManagerInterface $em)
     {
-        $configs =$em->getRepository(Config::class)->findAll();
+        $configs = $em->getRepository(Config::class)->findAll();
         if (empty($configs)) {
             $config = new Config();
         } else {

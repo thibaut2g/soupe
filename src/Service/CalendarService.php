@@ -85,7 +85,7 @@ class CalendarService
 
         $user = $this->em->getRepository(User::class)->findOneBy(['id' => $userId]);
         if (str_contains($user->getEmail(), "icam")) {
-            if(!$this->validateIcamSubscriptionCount($date)) { return false;}
+            if(!$this->validateIcamSubscriptionCount($date, $type)) { return false;}
         }
 
         $subscriptions = $this->em->getRepository(Subscription::class)
@@ -325,10 +325,10 @@ class CalendarService
         return $date > $ThreeMonthLater;
     }
 
-    private function validateIcamSubscriptionCount($date) {
+    private function validateIcamSubscriptionCount($date, $type) {
         $countIcam = 0;
         $subscriptions = $this->em->getRepository(Subscription::class)
-            ->findBy(['date' => $date]);
+            ->findBy(['date' => $date, "type" => $type, "isRemoved" => NULL]);
         /* @var \App\Entity\Subscription $subscription */
         foreach ($subscriptions as $subscription) {
             $user = $this->em->getRepository(User::class)

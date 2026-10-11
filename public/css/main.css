@@ -62,13 +62,13 @@ label {
     margin: 2px;
 }
 
-.subscribe, .unsubscribe {
+.subscribe, .unsubscribe, .unsubscribeAdmin {
     cursor: pointer;
 }
 .subscribe:hover {
     color: #00af00 !important;
 }
-.unsubscribe:hover {
+.unsubscribe:hover, .unsubscribeAdmin:hover {
     color: #d10000 !important;
 }
 

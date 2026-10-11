@@ -143,7 +143,7 @@ class CalendarService
                         /* @var \App\Entity\Subscription $date */
                         $date = $calendar[$day][$rowNumber];
 
-                        $tr .= $this->getUserSubscription($date->getUserId(), $userId);
+                        $tr .= $this->getUserSubscription($date->getUserId(), $userId, $date->getDate());
                         $lineCount++;
                     }
 
@@ -268,7 +268,7 @@ class CalendarService
         return true;
     }
 
-    private function getUserSubscription($userId, $SelfUserId)
+    private function getUserSubscription($userId, $SelfUserId, $date)
     {
         $user = $this->em->getRepository(User::class)
             ->findOneBy(['id' => $userId]);
@@ -279,7 +279,8 @@ class CalendarService
         return $this->twig->render('helper/subscribeButtons.html.twig', [
             'isCurrentUser' => ($SelfUserId == $userId),
             'isAdmin' => in_array('ROLE_ADMIN', $selfUser->getRoles()),
-            "user" => $user
+            "user" => $user,
+            'date' => $date
         ]);
     }
 

@@ -195,6 +195,27 @@ for (let user of userInfos) {
         }
     }
 
+    var subscribesAdmin = document.getElementsByClassName("unsubscribeAdmin");
+
+    for (let itemAdmin of subscribesAdmin) {
+        itemAdmin.addEventListener('click', function(){makeRequestAdmin(itemAdmin.dataset.date, itemAdmin.dataset.userid)});
+    }
+
+     function makeRequestAdmin(date, userId) {
+        var askedDate = date.split("-");
+        if (confirm("Confirmer la désinscription de cette date : " + askedDate[2] + "/" + askedDate[1] + "/" + askedDate[0] + " ?")) {
+            httpRequest = new XMLHttpRequest();
+
+            if (!httpRequest) {
+                alert('Abandon. Impossible de créer une instance de XMLHTTP');
+                return false;
+            }
+            httpRequest.onreadystatechange = alertContents;
+            httpRequest.open('GET', '/unsubscribeDateAdmin/' + type + "/" + date + "/" + userId);
+            httpRequest.send();
+        }
+    }
+
     function alertContents() {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status !== 200) {

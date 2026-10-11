@@ -85,4 +85,27 @@ class CalendarController extends AbstractController
         }
         return new Response($response);
     }
+
+     /**
+     * @Route("/unsubscribeDateAdmin/{type}/{date}/{userId}", name="unsubscribeDateAdmin")
+     * @param CalendarService $calendarService
+     * @param $type
+     * @param $date
+     * @return Response
+     */
+    public function unsubscribeDateAdmin(CalendarService $calendarService, $type, $date, $userId)
+    {
+        try {
+            if ($calendarService->unsubscribeDate($userId, $date, $type)) {
+                $response = "ok";
+            } else {
+                $response = "ko";
+            }
+        } catch (OptimisticLockException $e) {
+            echo $e->getMessage();
+        } catch (ORMException $e) {
+            echo $e->getMessage();
+        }
+        return new Response($response);
+    }
 }

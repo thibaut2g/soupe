@@ -53,11 +53,7 @@ class CalendarController extends AbstractController
         }
 
         try {
-            if ($calendarService->saveDate($userId, $date, $type)) {
-                $response = "ok";
-            } else {
-                $response = "ko";
-            }
+            $response = $calendarService->saveDate($userId, $date, $type);
         } catch (OptimisticLockException $e) {
             echo $e->getMessage();
         } catch (ORMException $e) {

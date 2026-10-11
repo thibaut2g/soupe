@@ -143,7 +143,7 @@ class CalendarService
                         /* @var \App\Entity\Subscription $date */
                         $date = $calendar[$day][$rowNumber];
 
-                        $tr .= $this->getUserSubscription($date->getUserId(), $userId, $date->getDate());
+                        $tr .= $this->getUserSubscription($date->getUserId(), $userId, $$calendar[$day][0]);
                         $lineCount++;
                     }
 

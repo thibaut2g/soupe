@@ -57,12 +57,12 @@ class CalendarService
     }
 
     /**
-     * @param $userId
+     * @param User $user
      * @param $date
      * @param $type
      * @return bool
      */
-    public function saveDate($userId, $date, $type)
+    public function saveDate(User $user, $date, $type)
     {
         if (!$this->validateDate($date)) {
             $date = $this->getFormattedDate($date);
@@ -81,6 +81,10 @@ class CalendarService
         if ($date > $maxDate) {
             // La date ne peut pas être à plus de 2 mois.
             return false;
+        }
+
+        if (str_contains($user->getEmail(), "icam")) {
+            if(!$this->validateIcamSubscriptionCount($date)) { return false;}
         }
 
         $subscriptions = $this->em->getRepository(Subscription::class)
@@ -318,5 +322,24 @@ class CalendarService
         $ThreeMonthLater = new \DateTime();
         $ThreeMonthLater->modify('+3 month');
         return $date > $ThreeMonthLater;
+    }
+
+    private function validateIcamSubscriptionCount($date) {
+        $countIcam = 0;
+        $subscriptions = $this->em->getRepository(Subscription::class)
+            ->findBy(['date' => $date]);
+        /* @var \App\Entity\Subscription $subscription */
+        foreach ($subscriptions as $subscription) {
+            $user = $this->em->getRepository(User::class)
+            ->findBy(['id' => $subscription->getUserId()]);
+            
+            if (str_contains($user->getEmail(), "icam")) {
+                $countIcam = $countIcam + 1;
+            }    
+        }
+        if ($countIcam < 3) {
+            return true;
+        }
+        return false;
     }
 }
